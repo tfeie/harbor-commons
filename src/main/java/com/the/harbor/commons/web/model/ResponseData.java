@@ -2,9 +2,9 @@ package com.the.harbor.commons.web.model;
 
 import java.io.Serializable;
 
-import com.ai.opt.base.vo.BaseResponse;
+import com.the.harbor.base.vo.Response;
 
-public class ResponseData<T> extends BaseResponse implements Serializable {
+public class ResponseData<T> extends Response implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

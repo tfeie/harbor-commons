@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
-import com.ai.opt.base.exception.SystemException;
+import com.the.harbor.base.exception.SystemException;
 import com.the.harbor.commons.util.CollectionUtil;
 
 public class EmailUtil {

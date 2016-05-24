@@ -9,16 +9,16 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ai.paas.ipaas.util.StringUtil;
 import com.the.harbor.commons.components.sequence.dao.ISequenceDao;
 import com.the.harbor.commons.components.sequence.model.Sequence;
 import com.the.harbor.commons.components.sequence.model.SequenceCache;
 import com.the.harbor.commons.exception.SDKException;
-
-import net.sf.json.JSONObject;
+import com.the.harbor.commons.util.StringUtil;
 
 public class SequenceDaoImpl implements ISequenceDao {
 

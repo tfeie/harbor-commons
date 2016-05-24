@@ -24,7 +24,7 @@ public class DubboRestResponseFilter implements ContainerResponseFilter {
                 data.put("resultCode", resp.getResultCode());
                 data.put("resultMessage", resp.getResultMessage());
             } else {
-                data.put("resultCode", ExceptCodeConstants.Special.SUCCESS);
+                data.put("resultCode", ExceptCodeConstants.SUCCESS);
                 data.put("resultMessage", "请求成功，业务处理返回请查看data节点");
                 data.put("data", responseContext.getEntity());
             }

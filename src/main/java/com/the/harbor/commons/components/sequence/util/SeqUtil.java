@@ -1,7 +1,7 @@
 package com.the.harbor.commons.components.sequence.util;
 
-import com.ai.paas.ipaas.util.StringUtil;
 import com.the.harbor.commons.components.sequence.factory.SeqClientFactory;
+import com.the.harbor.commons.util.StringUtil;
 
 public final class SeqUtil {
 

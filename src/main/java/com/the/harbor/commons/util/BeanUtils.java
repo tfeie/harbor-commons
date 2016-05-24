@@ -6,26 +6,12 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-import com.ai.opt.base.exception.SystemException;
+import com.the.harbor.base.exception.SystemException;
 
-/**
- * Title: MVNO-CRM <br>
- * Description: 提供Bean处理的工具类<br>
- * Date: 2014年2月22日 <br>
- * Copyright (c) 2014 AILK <br>
- * 
- * @author zhangchao
- */
 public final class BeanUtils {
-	private BeanUtils(){}
-    /**
-     * 拷贝VO对象属性，只拷贝基础属性
-     * 
-     * @param dest
-     * @param orign
-     * @author zhangchao
-     * @throws SystemException 
-     */
+    private BeanUtils() {
+    }
+
     public static void copyVO(Object destSVO, Object orignSVO) throws SystemException {
         /* 1.源对象与目标对象都不能为空 */
         if (destSVO == null || orignSVO == null) {
@@ -33,8 +19,9 @@ public final class BeanUtils {
         }
         /* 2.获取目标对象所有字段 */
         Field[] fields = destSVO.getClass().getDeclaredFields();
-        if (fields == null || fields.length == 0)
-            {return;}
+        if (fields == null || fields.length == 0) {
+            return;
+        }
         /* 3.依次拷贝每个字段取值 */
         for (Field field : fields) {
             String fieldName = field.getName();
@@ -69,7 +56,7 @@ public final class BeanUtils {
      * @param fieldName
      * @return
      * @author zhangchao
-     * @throws SystemException 
+     * @throws SystemException
      */
     public static Object getVoFieldValue(Object object, String fieldName) throws SystemException {
         try {
@@ -92,9 +79,10 @@ public final class BeanUtils {
      * @param fieldName
      * @param fieldValue
      * @author zhangchao
-     * @throws SystemException 
+     * @throws SystemException
      */
-    public static void setVoFieldValue(Object object, String fieldName, Object fieldValue) throws SystemException {
+    public static void setVoFieldValue(Object object, String fieldName, Object fieldValue)
+            throws SystemException {
         try {
             if (object == null || StringUtil.isBlank(fieldName)) {
                 throw new SystemException("设置对象指定属性值出错,对象为空或者指定字段为空");
@@ -127,10 +115,11 @@ public final class BeanUtils {
      * @return
      * @author zhangchao
      */
-    public  static boolean hasProperty(Object object, String fieldName) {
+    public static boolean hasProperty(Object object, String fieldName) {
         Field[] fields = object.getClass().getDeclaredFields();
-        if (fields == null || fields.length == 0)
-            {return false;}
+        if (fields == null || fields.length == 0) {
+            return false;
+        }
         for (Field field : fields) {
             String fieldN = field.getName();
             if (fieldN.equals(fieldName)) {
@@ -187,15 +176,13 @@ public final class BeanUtils {
         return key;
     }
 
- 
-
     /**
      * 深度拷贝
      * 
      * @param destSVO
      * @param orignSVO
      * @author choaryzhang
-     * @throws SystemException 
+     * @throws SystemException
      */
     public static void copyProperties(Object destSVO, Object orignSVO) throws SystemException {
         /* 1.源对象与目标对象都不能为空 */
@@ -213,7 +200,7 @@ public final class BeanUtils {
             throw new SystemException(e);
         }
     }
-    
+
     public static boolean hasMethod(Object obj, String methodName) {
         if (!StringUtil.isBlank(methodName)) {
             Method[] methods = obj.getClass().getDeclaredMethods();

@@ -7,7 +7,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.ai.opt.base.exception.SystemException;
+import com.the.harbor.base.exception.SystemException;
 
 public class EmailTemplateReader {
 

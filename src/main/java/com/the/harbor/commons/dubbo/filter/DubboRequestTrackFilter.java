@@ -8,10 +8,6 @@ import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ai.opt.base.exception.BusinessException;
-import com.ai.opt.base.exception.SystemException;
-import com.ai.opt.base.vo.BaseResponse;
-import com.ai.opt.base.vo.ResponseHeader;
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.Filter;
@@ -20,6 +16,10 @@ import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Result;
 import com.alibaba.dubbo.rpc.RpcResult;
 import com.alibaba.fastjson.JSON;
+import com.the.harbor.base.exception.BusinessException;
+import com.the.harbor.base.exception.SystemException;
+import com.the.harbor.base.vo.Response;
+import com.the.harbor.base.vo.ResponseHeader;
 import com.the.harbor.commons.util.CollectionUtil;
 import com.the.harbor.commons.util.UUIDUtil;
 
@@ -60,8 +60,8 @@ public class DubboRequestTrackFilter implements Filter {
                             result.getException().getMessage(), result.getException());
                 }
                 if (e instanceof BusinessException) {
-                    BaseResponse response = new BaseResponse();
-                    response.setResponseHeader(new ResponseHeader(false, ((BusinessException) e)
+                    Response response = new Response();
+                    response.setResponseHeader(new ResponseHeader(((BusinessException) e)
                             .getErrorCode(), ((BusinessException) e).getErrorMessage()));
                     RpcResult r = new RpcResult();
                     r.setValue(response);
@@ -95,8 +95,8 @@ public class DubboRequestTrackFilter implements Filter {
                         error = cv.getMessage();
                         break;
                     }
-                    BaseResponse response = new BaseResponse();
-                    response.setResponseHeader(new ResponseHeader(false, "888888", error));
+                    Response response = new Response();
+                    response.setResponseHeader(new ResponseHeader("888888", error));
                     r.setValue(response);
                 }
             } else {
