@@ -10,9 +10,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import com.alibaba.fastjson.JSON;
+import com.the.harbor.base.constants.ExceptCodeConstants;
 import com.the.harbor.base.exception.BusinessException;
 import com.the.harbor.base.exception.SystemException;
-import com.the.harbor.commons.constants.ExceptCodeConstants;
 
 public class DubboRestExceptionMapper implements ExceptionMapper<Exception> {
 

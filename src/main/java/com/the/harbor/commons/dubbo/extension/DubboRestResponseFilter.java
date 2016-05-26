@@ -8,7 +8,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 
 import net.sf.json.JSONObject;
 
-import com.the.harbor.commons.constants.ExceptCodeConstants;
+import com.the.harbor.base.constants.ExceptCodeConstants;
 
 public class DubboRestResponseFilter implements ContainerResponseFilter {
 
@@ -29,7 +29,7 @@ public class DubboRestResponseFilter implements ContainerResponseFilter {
                 data.put("data", responseContext.getEntity());
             }
             responseContext.setEntity(data);
-        } else if (status == 204) { 
+        } else if (status == 204) {
         }
 
     }
