@@ -29,8 +29,8 @@ public final class ElasticSearchSettings {
      * Load settings from the configuration file.
      * <p>
      * The configuration format:<br>
-     * client.transport.ping_timeout=3000<br>
-     * client.transport.nodes_sampler_interval=3000<br>
+     * client.transport.ping_timeout=3000ms<br>
+     * client.transport.nodes_sampler_interval=3000ms<br>
      * cluster.name=<br>
      * cluster.ip=<br>
      * cluster.port=<br>
