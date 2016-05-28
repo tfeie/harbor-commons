@@ -51,12 +51,10 @@ dependencies {
     compile ("com.101tec:zkclient:0.5") {
         exclude group: 'org.apache.zookeeper', module: 'zookeeper'
     }
-    compile 'junit:junit:4.12'
     compile 'log4j:log4j:1.2.17'
     compile 'com.zaxxer:HikariCP:2.4.0'
     compile 'org.apache.curator:curator-framework:2.9.0'
     compile 'net.sf.json-lib:json-lib:2.4:jdk15'
-    compile	'org.apache.commons:commons-email:1.4'
     compile 'org.dom4j:dom4j:1.6.1'
 }
 
@@ -193,12 +191,7 @@ publishing {
                             delegate.artifactId("json-lib")
                             delegate.version("2.4")
                             delegate.classifier("jdk15")
-                        }
-                        delegate.dependency {
-                            delegate.groupId("org.apache.commons")
-                            delegate.artifactId("commons-email")
-                            delegate.version("1.4")
-                        }
+                        } 
                         delegate.dependency {
                             delegate.groupId("org.dom4j")
                             delegate.artifactId("dom4j")
@@ -213,26 +206,6 @@ publishing {
                             delegate.groupId("org.hibernate")
                             delegate.artifactId("hibernate-validator")
                             delegate.version("4.2.0.Final")
-                        }
-                        delegate.dependency {
-                            delegate.groupId("net.sourceforge.jexcelapi")
-                            delegate.artifactId("jxl")
-                            delegate.version("2.6.12")
-                        }
-                        delegate.dependency {
-                            delegate.groupId("org.apache.poi")
-                            delegate.artifactId("poi")
-                            delegate.version("3.13")
-                        }
-                        delegate.dependency {
-                            delegate.groupId("org.apache.poi")
-                            delegate.artifactId("poi-ooxml")
-                            delegate.version("3.13")
-                        }
-                        delegate.dependency {
-                            delegate.groupId("org.apache.poi")
-                            delegate.artifactId("poi-ooxml-schemas")
-                            delegate.version("3.13")
                         }
                     }
                 }
