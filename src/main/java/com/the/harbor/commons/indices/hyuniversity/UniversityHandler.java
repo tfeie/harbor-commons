@@ -1,7 +1,5 @@
 package com.the.harbor.commons.indices.hyuniversity;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +7,7 @@ import java.util.Map;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.suggest.Suggest.Suggestion.Entry;
 import org.elasticsearch.search.suggest.Suggest.Suggestion.Entry.Option;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -25,7 +21,12 @@ import com.the.harbor.commons.util.CollectionUtil;
 
 public final class UniversityHandler {
 
-    public static void addIndex(List<University> list) {
+    /**
+     * 批量添加索引
+     * @param list
+     * @author zhangchao
+     */
+    public static void batchAddIndex(List<University> list) {
         if (CollectionUtil.isEmpty(list)) {
             return;
         }
@@ -55,24 +56,34 @@ public final class UniversityHandler {
         System.out.println(bulkResponse.hasFailures());
     }
 
-    public static List<University> queryByUniversityName(String countryCode,String universityName) {
-        SuggestRequestBuilder srb = ElasticSearchFactory.getClient().prepareSuggest(
-                HarborIndex.HY_UNIVERSITY.getName());
-        CompletionSuggestionBuilder csfb = new CompletionSuggestionBuilder("universityNameSuggest")
-                .field("universityNameSuggest").text(universityName).size(10);
-        srb = srb.addSuggestion(csfb); 
-        SuggestResponse response = srb.execute().actionGet();
-        List<? extends Entry<? extends Option>> list = response.getSuggest()
-                .getSuggestion("universityNameSuggest").getEntries();
-        for (Entry<? extends Option> e : list) {
-            for (Option option : e) {
-                System.out.println(option.getText());
+    /**
+     * 根据大学名称做搜索建议
+     * 
+     * @param universityName
+     * @return
+     * @author zhangchao
+     */
+    public static List<String> querySuggestByUniversityName(String universityName) {
+        CompletionSuggestionBuilder suggestionsBuilder = new CompletionSuggestionBuilder("complete");
+        suggestionsBuilder.text(universityName);
+        suggestionsBuilder.field("universityNameSuggest");
+        suggestionsBuilder.size(10);
+        SuggestResponse resp = ElasticSearchFactory.getClient()
+                .prepareSuggest(HarborIndex.HY_UNIVERSITY.getName())
+                .addSuggestion(suggestionsBuilder).execute().actionGet();
+        List<? extends Entry<? extends Option>> list = resp.getSuggest().getSuggestion("complete")
+                .getEntries();
+        List<String> suggests = new ArrayList<String>();
+        if (list == null) {
+            return null;
+        } else {
+            for (Entry<? extends Option> e : list) {
+                for (Option option : e) {
+                    suggests.add(option.getText().toString());
+                }
             }
-
+            return suggests;
         }
-
-        return null;
-
     }
 
 }
