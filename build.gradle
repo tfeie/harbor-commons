@@ -212,6 +212,11 @@ publishing {
                             delegate.version("4.2.0.Final")
                         }
                         delegate.dependency {
+                            delegate.groupId("org.elasticsearch")
+                            delegate.artifactId("elasticsearch")
+                            delegate.version("2.3.3")
+                        } 
+                        delegate.dependency {
                             delegate.groupId("com.aliyun")
                             delegate.artifactId("aliyun-java-sdk-core")
                             delegate.version("2.2.2")
