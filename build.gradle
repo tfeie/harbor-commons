@@ -210,6 +210,16 @@ publishing {
                             delegate.artifactId("hibernate-validator")
                             delegate.version("4.2.0.Final")
                         }
+                        delegate.dependency {
+                            delegate.groupId("com.aliyun")
+                            delegate.artifactId("aliyun-java-sdk-core")
+                            delegate.version("2.2.2")
+                        }
+                        delegate.dependency {
+                            delegate.groupId("com.aliyun")
+                            delegate.artifactId("aliyun-java-sdk-dm")
+                            delegate.version("2.0.0-rc2")
+                        }
                     }
                 }
             }
