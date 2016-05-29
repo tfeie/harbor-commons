@@ -59,6 +59,7 @@ dependencies {
     
     compile 'com.aliyun:aliyun-java-sdk-core:2.2.2'
     compile 'com.aliyun:aliyun-java-sdk-dm:2.0.0-rc2'
+    compile 'com.taobao:taobao-sdk-java:1.0.20160505'
 }
 
 jar {
@@ -219,6 +220,11 @@ publishing {
                             delegate.groupId("com.aliyun")
                             delegate.artifactId("aliyun-java-sdk-dm")
                             delegate.version("2.0.0-rc2")
+                        }
+                        delegate.dependency {
+                            delegate.groupId("com.taobao")
+                            delegate.artifactId("taobao-sdk-java")
+                            delegate.version("1.0.20160505")
                         }
                     }
                 }
