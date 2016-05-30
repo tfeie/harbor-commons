@@ -12,11 +12,11 @@ public class SMSSenderTest {
 	public static void main(String[] args) {
 		SMSSendRequest req = new SMSSendRequest();
 		List<String> recNumbers = new ArrayList<String>();
-		//recNumbers.add("18610316986");
+		recNumbers.add("18610316986");
 		recNumbers.add("18601179558");
 		JSONObject smsParams = new JSONObject();
-		smsParams.put("code", "1872");
-		smsParams.put("product", "海归海湾");
+		smsParams.put("code", "2019");
+		smsParams.put("product", "SLP");
 		req.setRecNumbers(recNumbers);
 		req.setSmsFreeSignName("注册验证");
 		req.setSmsParams(smsParams);
