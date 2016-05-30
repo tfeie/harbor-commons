@@ -57,6 +57,7 @@ dependencies {
     compile 'net.sf.json-lib:json-lib:2.4:jdk15'
     compile 'org.dom4j:dom4j:1.6.1'
     compile 'redis.clients:jedis:2.8.1'
+    compile 'org.apache.httpcomponents:httpasyncclient:4.0.1'
     compile 'com.aliyun:aliyun-java-sdk-core:2.2.2'
     compile 'com.aliyun:aliyun-java-sdk-dm:2.0.0-rc2'
     compile 'com.taobao:taobao-sdk-java:1.0.20160505'
@@ -217,6 +218,11 @@ publishing {
                             delegate.artifactId("elasticsearch")
                             delegate.version("2.3.3")
                         } 
+                        delegate.dependency {
+                            delegate.groupId("org.apache.httpcomponents")
+                            delegate.artifactId("httpasyncclient")
+                            delegate.version("4.0.1")
+                        }
                         delegate.dependency {
                             delegate.groupId("com.aliyun")
                             delegate.artifactId("aliyun-java-sdk-core")
