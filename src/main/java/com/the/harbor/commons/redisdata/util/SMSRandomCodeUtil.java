@@ -1,5 +1,6 @@
 package com.the.harbor.commons.redisdata.util;
 
+import com.the.harbor.commons.components.globalconfig.GlobalSettings;
 import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.components.redis.interfaces.ICacheClient;
 
@@ -15,7 +16,7 @@ public final class SMSRandomCodeUtil {
 	 */
 	public static void setSmsRandomCode(String phoneNumber, String randomCode) {
 		String key = PREFIX_KEY + "." + phoneNumber;
-		int seconds = 60;
+		int seconds = GlobalSettings.getSMSRandomCodeExpireSeconds();
 		ICacheClient client = CacheFactory.getClient();
 		client.set(key, randomCode);
 		client.expire(key, seconds);
