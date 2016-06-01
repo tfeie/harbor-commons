@@ -51,9 +51,10 @@ public final class GlobalSettings {
 			}
 		}
 	}
-	
+
 	/**
 	 * 获取域名
+	 * 
 	 * @return
 	 */
 	public static final String getHarborDomain() {
@@ -138,19 +139,58 @@ public final class GlobalSettings {
 		}
 		return paysecret;
 	}
-	
-	
 
 	/**
 	 * 微信授权API
 	 * 
 	 * @return
 	 */
-	public static final String getWeiXinAuthorizeAPI() {
-		String api = properties.getProperty("harbor.weixin.authorize.api");
+	public static final String getWeiXinConnectAuthorizeAPI() {
+		String api = properties.getProperty("harbor.weixin.connect.oauth2.authorize.api");
 		if (StringUtil.isBlank(api)) {
 			throw new SDKException(
-					"can not get harbor.weixin.authorize.api from the file: " + SETTINGS_FILE_NAME);
+					"can not get harbor.weixin.connect.oauth2.authorize.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
+	}
+
+	/**
+	 * 微信ACCESS_TOKEN获取API
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinSNSAuthAccessTokenAPI() {
+		String api = properties.getProperty("harbor.weixin.sns.oauth2.access_token.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException(
+					"can not get harbor.weixin.sns.oauth2.access_token.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
+	}
+
+	/**
+	 * 微信用户信息获取API
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinSNSUserInfoAPI() {
+		String api = properties.getProperty("harbor.weixin.sns.userinfo.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException("can not get harbor.weixin.sns.userinfo.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
+	}
+
+	/**
+	 * 微信商户统一下单API
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinMCHPayUnifiedorderAPI() {
+		String api = properties.getProperty("harbor.weixin.mch.payunifiedorder.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException(
+					"can not get harbor.weixin.mch.pay.unifiedorder.api from the file: " + SETTINGS_FILE_NAME);
 		}
 		return api;
 	}
