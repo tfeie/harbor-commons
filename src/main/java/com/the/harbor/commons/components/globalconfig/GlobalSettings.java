@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.the.harbor.commons.components.elasticsearch.ElasticSearchSettings;
 import com.the.harbor.commons.exception.SDKException;
+import com.the.harbor.commons.util.StringUtil;
 
 public final class GlobalSettings {
 
@@ -59,6 +60,71 @@ public final class GlobalSettings {
 	public static final int getSMSRandomCodeExpireSeconds() {
 		String seconds = properties.getProperty("sms.randomcode.expire.seconds", "60");
 		return Integer.parseInt(seconds);
+	}
+
+	/**
+	 * 获取微信应用ID
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinAppId() {
+		String appId = properties.getProperty("harbor.weixin.appid");
+		if (StringUtil.isBlank(appId)) {
+			throw new SDKException("can not get harbor.weixin.appid from the file: " + SETTINGS_FILE_NAME);
+		}
+		return appId;
+	}
+
+	/**
+	 * 获取微信应用密钥
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinAppSecret() {
+		String appsecret = properties.getProperty("harbor.weixin.appsecret");
+		if (StringUtil.isBlank(appsecret)) {
+			throw new SDKException("can not get harbor.weixin.appsecret from the file: " + SETTINGS_FILE_NAME);
+		}
+		return appsecret;
+	}
+
+	/**
+	 * 获取微信商户号
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinMerchantId() {
+		String merchantid = properties.getProperty("harbor.weixin.merchantid");
+		if (StringUtil.isBlank(merchantid)) {
+			throw new SDKException("can not get harbor.weixin.merchantid from the file: " + SETTINGS_FILE_NAME);
+		}
+		return merchantid;
+	}
+
+	/**
+	 * 获取微信商户名称
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinMerchantName() {
+		String merchantname = properties.getProperty("harbor.weixin.merchantname");
+		if (StringUtil.isBlank(merchantname)) {
+			throw new SDKException("can not get harbor.weixin.merchantname from the file: " + SETTINGS_FILE_NAME);
+		}
+		return merchantname;
+	}
+
+	/**
+	 * 获取微信支付密钥
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinPaySecret() {
+		String paysecret = properties.getProperty("harbor.weixin.paysecret");
+		if (StringUtil.isBlank(paysecret)) {
+			throw new SDKException("can not get harbor.weixin.paysecret from the file: " + SETTINGS_FILE_NAME);
+		}
+		return paysecret;
 	}
 
 }
