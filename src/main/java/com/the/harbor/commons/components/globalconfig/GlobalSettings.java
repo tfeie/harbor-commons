@@ -51,6 +51,18 @@ public final class GlobalSettings {
 			}
 		}
 	}
+	
+	/**
+	 * 获取域名
+	 * @return
+	 */
+	public static final String getHarborDomain() {
+		String domain = properties.getProperty("harbor.domain");
+		if (StringUtil.isBlank(domain)) {
+			throw new SDKException("can not get harbor.domain from the file: " + SETTINGS_FILE_NAME);
+		}
+		return domain;
+	}
 
 	/**
 	 * 获取短信验证码的超时时间，单位是秒
@@ -125,6 +137,22 @@ public final class GlobalSettings {
 			throw new SDKException("can not get harbor.weixin.paysecret from the file: " + SETTINGS_FILE_NAME);
 		}
 		return paysecret;
+	}
+	
+	
+
+	/**
+	 * 微信授权API
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinAuthorizeAPI() {
+		String api = properties.getProperty("harbor.weixin.authorize.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException(
+					"can not get harbor.weixin.authorize.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
 	}
 
 }
