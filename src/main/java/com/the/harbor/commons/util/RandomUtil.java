@@ -1,37 +1,31 @@
 package com.the.harbor.commons.util;
 
-/**
- * 生成指定位数的随机数
- *
- * Date: 2016年3月25日 <br>
- * Copyright (c) 2016 asiainfo.com <br>
- * @author gucl
- */
+import java.util.Random;
+
 public class RandomUtil {
-	public static String randomNum(int length){
-		String str = "";
-		str += (int)(Math.random()*10);
-		for(int i = 0; i < length-1; i++){
-			str += (int)(Math.random()*10);
+
+	public static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final String LETTERCHAR = "abcdefghijkllmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final String NUMBERCHAR = "0123456789";
+
+	/**
+	 * 返回一个定长的随机字符串(只包含大小写字母、数字)
+	 * 
+	 * @param length
+	 *            随机字符串长度
+	 * @return 随机字符串
+	 */
+	public static String generateString(int length) {
+		StringBuffer sb = new StringBuffer();
+		Random random = new Random();
+		for (int i = 0; i < length; i++) {
+			sb.append(ALLCHAR.charAt(random.nextInt(ALLCHAR.length())));
 		}
-		return str;
+		return sb.toString();
 	}
-	
-	
-	public static final String randomString(int length) {
-		char[] charArry = new char[length];
-		int i = 0;
-		while (i < length) {
-			int f = (int) (Math.random() * 3);
-			if (f == 0)
-				charArry[i] = (char) ('A' + Math.random() * 26);
-			else if (f == 1)
-				charArry[i] = (char) ('a' + Math.random() * 26);
-			else
-				charArry[i] = (char) ('0' + Math.random() * 10);
-			i++;
-		}
-		return new String(charArry);
+
+	public static void main(String[] args) {
+		System.out.println(RandomUtil.generateString(32));
 	}
-	
+
 }
