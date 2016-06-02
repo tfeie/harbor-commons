@@ -1,5 +1,7 @@
 package com.the.harbor.commons.components.aliyuncs.sms;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.mns.client.CloudQueue;
@@ -21,6 +23,8 @@ import com.the.harbor.commons.util.StringUtil;
 import com.the.harbor.commons.util.UUIDUtil;
 
 public final class SMSSender {
+
+	private static final Logger LOG = Logger.getLogger(SMSSender.class);
 
 	public static void send(SMSSendRequest request) {
 		if (request == null) {
@@ -51,6 +55,7 @@ public final class SMSSender {
 			// 标记为失败
 			status = "11";
 			remark = StringUtil.restrictLength("发送失败:" + e.getErrMsg(), 350);
+			LOG.error("短信发送失败", e);
 		}
 		// 组织短信发送模板消息
 		SMSSendResponse response = new SMSSendResponse();
@@ -63,7 +68,13 @@ public final class SMSSender {
 		response.setTemplateCode(req.getSmsTemplateCode());
 		response.setSmsContent(req.getSmsParam());
 		response.setStatus(status);
-		//buildMQandRecord(response);
+
+		try {
+			buildMQandRecord(response);
+		} catch (Exception ex) {
+			LOG.error("短信发送记录写入消息队列失败", ex);
+		}
+
 	}
 
 	private static void buildMQandRecord(SMSSendResponse response) {
@@ -74,19 +85,17 @@ public final class SMSSender {
 			message.setMessageBody(JSON.toJSONString(response));
 			queue.putMessage(message);
 		} catch (ClientException ce) {
-			System.out.println("Something wrong with the network connection between client and MNS service."
-					+ "Please check your network and DNS availablity.");
-			ce.printStackTrace();
+			LOG.error("Something wrong with the network connection between client and MNS service."
+					+ "Please check your network and DNS availablity.", ce);
 		} catch (ServiceException se) {
 			if (se.getErrorCode().equals("QueueNotExist")) {
-				System.out.println("Queue is not exist.Please create before use");
+				LOG.error("Queue is not exist.Please create before use", se);
 			} else if (se.getErrorCode().equals("TimeExpired")) {
-				System.out.println("The request is time expired. Please check your local machine timeclock");
+				LOG.error("The request is time expired. Please check your local machine timeclock", se);
 			}
 			se.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Unknown exception happened!");
-			e.printStackTrace();
+			LOG.error("Unknown exception happened!", e);
 		}
 		client.close();
 

@@ -8,10 +8,15 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import com.aliyun.mns.common.utils.ServiceSettings;
+import com.the.harbor.commons.components.aliyuncs.sms.SMSSender;
 
 public final class MNSSettings {
+	
+	private static final Logger LOG = Logger.getLogger(MNSSettings.class);
+
 
 	private static final String SETTINGS_FILE_NAME = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + ".aliyun-mns.properties";
@@ -71,9 +76,9 @@ public final class MNSSettings {
 			is = new FileInputStream(SETTINGS_FILE_NAME);
 			properties.load(is);
 		} catch (FileNotFoundException e) {
-			log.warn("The settings file '" + SETTINGS_FILE_NAME + "' does not exist.");
+			LOG.error("The settings file '" + SETTINGS_FILE_NAME + "' does not exist.",e);
 		} catch (IOException e) {
-			log.warn("Failed to load the settings from the file: " + SETTINGS_FILE_NAME);
+			LOG.error("Failed to load the settings from the file: " + SETTINGS_FILE_NAME,e);
 		} finally {
 			if (is != null) {
 				try {
