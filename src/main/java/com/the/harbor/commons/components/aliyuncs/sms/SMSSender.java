@@ -63,7 +63,7 @@ public final class SMSSender {
 		response.setTemplateCode(req.getSmsTemplateCode());
 		response.setSmsContent(req.getSmsParam());
 		response.setStatus(status);
-		buildMQandRecord(response);
+		//buildMQandRecord(response);
 	}
 
 	private static void buildMQandRecord(SMSSendResponse response) {
