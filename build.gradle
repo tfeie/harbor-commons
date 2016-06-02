@@ -219,6 +219,11 @@ publishing {
                             delegate.version("2.3.3")
                         } 
                         delegate.dependency {
+                            delegate.groupId("redis.clients")
+                            delegate.artifactId("jedis")
+                            delegate.version("2.8.1")
+                        } 
+                        delegate.dependency {
                             delegate.groupId("org.apache.httpcomponents")
                             delegate.artifactId("httpasyncclient")
                             delegate.version("4.0.1")
