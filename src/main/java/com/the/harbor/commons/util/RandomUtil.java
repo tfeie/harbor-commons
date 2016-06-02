@@ -23,9 +23,23 @@ public class RandomUtil {
 		}
 		return sb.toString();
 	}
+	
+	/**
+	 * 生成指定长度的纯数字验证码
+	 * @param length
+	 * @return
+	 */
+	public static String generateNumber(int length) {
+		StringBuffer sb = new StringBuffer();
+		Random random = new Random();
+		for (int i = 0; i < length; i++) {
+			sb.append(NUMBERCHAR.charAt(random.nextInt(NUMBERCHAR.length())));
+		}
+		return sb.toString();
+	}
 
 	public static void main(String[] args) {
-		System.out.println(RandomUtil.generateString(32));
+		System.out.println(RandomUtil.generateNumber(6));
 	}
 
 }
