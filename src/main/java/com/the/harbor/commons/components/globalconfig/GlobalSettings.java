@@ -74,18 +74,32 @@ public final class GlobalSettings {
 		String seconds = properties.getProperty("sms.randomcode.expire.seconds", "60");
 		return Integer.parseInt(seconds);
 	}
-	
-	
+
 	/**
 	 * 获取阿里亲上的用户随机验证码模板
+	 * 
 	 * @return
 	 */
 	public static final String getSMSUserRandomCodeTemplate() {
 		String template = properties.getProperty("sms.aliqin.user.randomcode.template");
 		if (StringUtil.isBlank(template)) {
-			throw new SDKException("can not get sms.aliqin.user.randomcode.template from the file: " + SETTINGS_FILE_NAME);
+			throw new SDKException(
+					"can not get sms.aliqin.user.randomcode.template from the file: " + SETTINGS_FILE_NAME);
 		}
 		return template;
+	}
+
+	/**
+	 * 获取阿里亲上的签名
+	 * 
+	 * @return
+	 */
+	public static final String getSMSFreeSignName() {
+		String freeSignName = properties.getProperty("sms.aliqin.freesignname");
+		if (StringUtil.isBlank(freeSignName)) {
+			throw new SDKException("can not get sms.aliqin.freesignname from the file: " + SETTINGS_FILE_NAME);
+		}
+		return freeSignName;
 	}
 
 	/**
