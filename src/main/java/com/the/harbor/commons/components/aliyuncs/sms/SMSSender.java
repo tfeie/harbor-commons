@@ -93,7 +93,7 @@ public final class SMSSender {
 			} else if (se.getErrorCode().equals("TimeExpired")) {
 				LOG.error("The request is time expired. Please check your local machine timeclock", se);
 			}
-			se.printStackTrace();
+			LOG.error("SMS  message put in Queue error",se);
 		} catch (Exception e) {
 			LOG.error("Unknown exception happened!", e);
 		}
