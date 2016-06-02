@@ -222,4 +222,17 @@ public final class GlobalSettings {
 		return api;
 	}
 
+	/**
+	 * 获取短信发送数据记录处理队列名称
+	 * 
+	 * @return
+	 */
+	public static final String getSMSRecordQueueName() {
+		String queue = properties.getProperty("harbor.mns.sms.record.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.sms.record.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
 }

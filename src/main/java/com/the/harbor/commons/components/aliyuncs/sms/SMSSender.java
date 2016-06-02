@@ -14,8 +14,10 @@ import com.the.harbor.commons.components.aliyuncs.mns.MNSFactory;
 import com.the.harbor.commons.components.aliyuncs.sms.param.SMSSendRequest;
 import com.the.harbor.commons.components.aliyuncs.sms.param.SMSSendRequest.SMSType;
 import com.the.harbor.commons.components.aliyuncs.sms.param.SMSSendResponse;
+import com.the.harbor.commons.components.globalconfig.GlobalSettings;
 import com.the.harbor.commons.exception.SDKException;
 import com.the.harbor.commons.util.DateUtil;
+import com.the.harbor.commons.util.StringUtil;
 import com.the.harbor.commons.util.UUIDUtil;
 
 public final class SMSSender {
@@ -37,11 +39,18 @@ public final class SMSSender {
 		AlibabaAliqinFcSmsNumSendResponse resp = null;
 		try {
 			resp = SMSFactory.getTaobaoClient().execute(req);
-			// 标记为成功
-			status = "10";
+			boolean success = resp.getResult().getSuccess();
+			if (success) {
+				status = "10";
+				remark = "发送成功";
+			} else {
+				status = "11";
+				remark = StringUtil.restrictLength("发送失败:" + resp.getResult().getMsg(), 350);
+			}
 		} catch (ApiException e) {
 			// 标记为失败
 			status = "11";
+			remark = StringUtil.restrictLength("发送失败:" + e.getErrMsg(), 350);
 		}
 		// 组织短信发送模板消息
 		SMSSendResponse response = new SMSSendResponse();
@@ -60,7 +69,7 @@ public final class SMSSender {
 	private static void buildMQandRecord(SMSSendResponse response) {
 		MNSClient client = MNSFactory.getMNSClient();
 		try {
-			CloudQueue queue = client.getQueueRef("queue-sms-send-record");
+			CloudQueue queue = client.getQueueRef(GlobalSettings.getSMSRecordQueueName());
 			Message message = new Message();
 			message.setMessageBody(JSON.toJSONString(response));
 			queue.putMessage(message);
