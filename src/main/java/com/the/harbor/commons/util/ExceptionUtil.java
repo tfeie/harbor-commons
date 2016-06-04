@@ -9,7 +9,6 @@ import javax.validation.ConstraintViolationException;
 import com.alibaba.dubbo.rpc.RpcResult;
 import com.the.harbor.base.constants.ExceptCodeConstants;
 import com.the.harbor.base.exception.BusinessException;
-import com.the.harbor.base.exception.SystemException;
 import com.the.harbor.base.vo.Response;
 import com.the.harbor.base.vo.ResponseHeader;
 import com.the.harbor.commons.web.model.ResponseData;
@@ -28,8 +27,6 @@ public final class ExceptionUtil {
 	public static final <T> ResponseData<T> convert(Exception ex, Class<T> clazz) {
 		ResponseData<T> responseData = null;
 		if (ex instanceof BusinessException) {
-			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE, ex.getMessage());
-		} else if (ex instanceof SystemException) {
 			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE, ex.getMessage());
 		} else {
 			String error = null;
