@@ -53,6 +53,6 @@ public final class SMSRandomCodeUtil {
 	 * @return
 	 */
 	public static String createRandomCode() {
-		return RandomUtil.generateNumber(6);
+		return RandomUtil.generateNumber(4);
 	}
 }
