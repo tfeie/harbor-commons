@@ -66,6 +66,8 @@ dependencies {
     compile 'com.taobao:taobao-sdk-java:1.0.20160505'
     compile 'com.aliyun.mns:aliyun-sdk-mns:1.1.5'
     compile 'com.aliyun.oss:aliyun-sdk-oss:2.2.3'
+    compile 'org.apache.httpcomponents:httpclient:4.4.1'
+    compile 'org.apache.httpcomponents:httpcore:4.3'
     
     compile fileTree(dir:'lib',include:'**/*.jar')
 }
