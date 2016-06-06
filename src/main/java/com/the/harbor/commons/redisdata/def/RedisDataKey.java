@@ -8,7 +8,11 @@ public enum RedisDataKey {
 
 	KEY_SINGLE_INDUSTRY("harbor.single.industry", "单个行业缓存"),
 
-	KEY_ALL_INDUSTRIES("harbor.all.industries", "所有行业以列表方式缓存");
+	KEY_ALL_INDUSTRIES("harbor.all.industries", "所有行业以列表方式缓存"),
+
+	KEY_BASE_INTEREST_TAGS("harbor.base.interest.tags", "所有的基础兴趣标签"),
+
+	KEY_BASE_SKILL_TAGS("harbor.base.skill.tags", "所有的基础技能标签");
 
 	private RedisDataKey(String key, String keyDesc) {
 		this.key = key;

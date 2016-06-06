@@ -19,7 +19,9 @@ ext {
     publishURL = "http://123.57.17.96:8081/nexus/content/repositories/snapshots/"
 }
 
-repositories { maven { url "http://123.57.17.96:8081/nexus/content/groups/public/" } }
+repositories { 
+	maven { url "http://123.57.17.96:8081/nexus/content/groups/public/" } 
+}
 
 dependencies {
 	compile "com.the.harbor.base:harbor-base:1.0-SNAPSHOT"
@@ -57,12 +59,15 @@ dependencies {
     compile 'net.sf.json-lib:json-lib:2.4:jdk15'
     compile 'org.dom4j:dom4j:1.6.1'
     compile 'redis.clients:jedis:2.8.1'
+    compile 'redis.clients:jedis:2.8.1'
+    compile 'org.apache.httpcomponents:httpclient:4.4.1'
     compile 'org.apache.httpcomponents:httpasyncclient:4.0.1'
     compile 'com.aliyun:aliyun-java-sdk-core:2.2.2'
     compile 'com.aliyun:aliyun-java-sdk-dm:2.0.0-rc2'
     compile 'com.taobao:taobao-sdk-java:1.0.20160505'
     compile 'com.aliyun.mns:aliyun-sdk-mns:1.1.5'
     compile 'com.aliyun.oss:aliyun-sdk-oss:2.2.3'
+    compile fileTree(dir:'lib',include:'**/*.jar')
 }
 
 jar {
