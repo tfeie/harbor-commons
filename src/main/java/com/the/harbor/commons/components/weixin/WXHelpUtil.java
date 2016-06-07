@@ -101,15 +101,12 @@ public final class WXHelpUtil {
 	 * @param url
 	 * @return
 	 */
-	public static String createJSSDKSignatureSHA(String noncestr, String jsapiTicket, String timestamp, String url) {
+	public static String createJSSDKSignatureSHA(String noncestr, String jsapiTicket, long timestamp, String url) {
 		if (StringUtil.isBlank(noncestr)) {
 			throw new SDKException("生成JSSDK签名失败:缺少随机数");
 		}
 		if (StringUtil.isBlank(jsapiTicket)) {
 			throw new SDKException("生成JSSDK签名失败:缺少TICKET");
-		}
-		if (StringUtil.isBlank(timestamp)) {
-			throw new SDKException("生成JSSDK签名失败:缺少时间戳");
 		}
 		if (StringUtil.isBlank(url)) {
 			throw new SDKException("生成JSSDK签名失败:缺少URL");
@@ -143,10 +140,11 @@ public final class WXHelpUtil {
 	public static void main(String[] agrs) {
 		String noncestr = WXHelpUtil.createNoncestr();
 		String jsapiTicket = WXHelpUtil.getJSAPITicket();
-		String timestamp = DateUtil.getCurrentTime();
+		long timestamp = DateUtil.getCurrentTimeMillis();
 		String url = "http://localhost:8080/hh/hh";
-		String signature = WXHelpUtil.createJSSDKSignatureSHA(noncestr, jsapiTicket, timestamp, url);
-		System.out.println(signature);
+		// String signature = WXHelpUtil.createJSSDKSignatureSHA(noncestr,
+		// jsapiTicket, timestamp, url);
+		System.out.println(DateUtil.getCurrentTimeMillis());
 	}
 
 }
