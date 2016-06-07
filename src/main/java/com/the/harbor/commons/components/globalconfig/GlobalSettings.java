@@ -180,7 +180,7 @@ public final class GlobalSettings {
 	}
 
 	/**
-	 * 微信ACCESS_TOKEN获取API
+	 * 微信网页认证ACCESS_TOKEN获取API
 	 * 
 	 * @return
 	 */
@@ -232,5 +232,32 @@ public final class GlobalSettings {
 		}
 		return queue;
 	}
+
+	/**
+	 * 获取微信普通TOKEN的API
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinTokenAPI() {
+		String api = properties.getProperty("harbor.weixin.token.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException("can not get harbor.weixin.token.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
+	}
+	
+	/**
+	 * 获取微信TICKET的API
+	 * @return
+	 */
+	public static final String getWeiXinJSAPITicketAPI() {
+		String api = properties.getProperty("harbor.weixin.ticket.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException("can not get harbor.weixin.ticket.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
+	}
+	
+	
 
 }
