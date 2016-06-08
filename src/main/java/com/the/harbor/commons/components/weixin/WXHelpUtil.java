@@ -144,7 +144,7 @@ public final class WXHelpUtil {
 		String url = "http://localhost:8080/hh/hh";
 		// String signature = WXHelpUtil.createJSSDKSignatureSHA(noncestr,
 		// jsapiTicket, timestamp, url);
-		System.out.println(DateUtil.getCurrentTimeMillis());
+		System.out.println(getCommonAccessToken());
 	}
 
 }
