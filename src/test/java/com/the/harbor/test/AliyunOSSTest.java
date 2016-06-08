@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.apache.http.ssl.TrustStrategy;
+
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.event.ProgressEvent;
