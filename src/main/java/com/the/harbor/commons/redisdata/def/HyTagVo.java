@@ -12,6 +12,10 @@ public class HyTagVo implements Serializable {
 
 	private String tagName;
 
+	private String scopeType;
+
+	private String tagCat;
+
 	public String getTagId() {
 		return tagId;
 	}
@@ -34,6 +38,22 @@ public class HyTagVo implements Serializable {
 
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
+	}
+
+	public String getScopeType() {
+		return scopeType;
+	}
+
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
+	}
+
+	public String getTagCat() {
+		return tagCat;
+	}
+
+	public void setTagCat(String tagCat) {
+		this.tagCat = tagCat;
 	}
 
 }
