@@ -16,6 +16,8 @@ public class HyTagVo implements Serializable {
 
 	private String tagCat;
 
+	private boolean selected;
+
 	public String getTagId() {
 		return tagId;
 	}
@@ -55,5 +57,15 @@ public class HyTagVo implements Serializable {
 	public void setTagCat(String tagCat) {
 		this.tagCat = tagCat;
 	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
+	
 
 }
