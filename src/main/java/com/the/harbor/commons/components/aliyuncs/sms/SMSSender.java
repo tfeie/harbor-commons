@@ -42,7 +42,7 @@ public final class SMSSender {
 		AlibabaAliqinFcSmsNumSendResponse resp = null;
 		try {
 			resp = SMSFactory.getTaobaoClient().execute(req);
-			if (!"0".equals(resp.getErrorCode())) {
+			if (!StringUtil.isBlank(resp.getErrorCode())) {
 				throw new SDKException("发送失败:" + resp.getSubMsg());
 			}
 			boolean success = resp.getResult().getSuccess();
