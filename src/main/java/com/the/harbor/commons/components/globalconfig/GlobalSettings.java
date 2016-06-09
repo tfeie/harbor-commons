@@ -64,6 +64,19 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * 获取图片文件CDN域名
+	 * 
+	 * @return
+	 */
+	public static final String getHarborImagesDomain() {
+		String domain = properties.getProperty("images.harbor.domain");
+		if (StringUtil.isBlank(domain)) {
+			throw new SDKException("can not get images.harbor.domain from the file: " + SETTINGS_FILE_NAME);
+		}
+		return domain;
+	}
+
+	/**
 	 * 获取短信验证码的超时时间，单位是秒
 	 * 
 	 * @return
@@ -245,9 +258,10 @@ public final class GlobalSettings {
 		}
 		return api;
 	}
-	
+
 	/**
 	 * 获取微信TICKET的API
+	 * 
 	 * @return
 	 */
 	public static final String getWeiXinJSAPITicketAPI() {
@@ -257,7 +271,31 @@ public final class GlobalSettings {
 		}
 		return api;
 	}
-	
-	
+
+	/**
+	 * 获取微信媒体文件下载的API
+	 * 
+	 * @return
+	 */
+	public static final String getWeiXinMediaGetAPI() {
+		String api = properties.getProperty("harbor.weixin.media.get.api");
+		if (StringUtil.isBlank(api)) {
+			throw new SDKException("can not get harbor.weixin.media.get.api from the file: " + SETTINGS_FILE_NAME);
+		}
+		return api;
+	}
+
+	/**
+	 * 获取图片存储OSS的bucket名称
+	 * 
+	 * @return
+	 */
+	public static final String getHarborImagesBucketName() {
+		String name = properties.getProperty("harbor.oss.images.bucketname");
+		if (StringUtil.isBlank(name)) {
+			throw new SDKException("can not get harbor.oss.images.bucketname from the file: " + SETTINGS_FILE_NAME);
+		}
+		return name;
+	}
 
 }

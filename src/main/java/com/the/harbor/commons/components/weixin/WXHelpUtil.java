@@ -1,21 +1,34 @@
 package com.the.harbor.commons.components.weixin;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.PutObjectRequest;
+import com.the.harbor.commons.components.aliyuncs.oss.OSSFactory;
+import com.the.harbor.commons.components.aliyuncs.oss.PutObjectProgressListener;
 import com.the.harbor.commons.components.globalconfig.GlobalSettings;
 import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.exception.SDKException;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
-import com.the.harbor.commons.util.DateUtil;
 import com.the.harbor.commons.util.HttpUtil;
 import com.the.harbor.commons.util.RandomUtil;
 import com.the.harbor.commons.util.StringUtil;
 
 public final class WXHelpUtil {
+
+	private static final Logger LOG = Logger.getLogger(WXHelpUtil.class);
 
 	private WXHelpUtil() {
 
@@ -137,14 +150,77 @@ public final class WXHelpUtil {
 		return result;
 	}
 
-	public static void main(String[] agrs) {
-		String noncestr = WXHelpUtil.createNoncestr();
-		String jsapiTicket = WXHelpUtil.getJSAPITicket();
-		long timestamp = DateUtil.getCurrentTimeMillis();
-		String url = "http://localhost:8080/hh/hh";
-		// String signature = WXHelpUtil.createJSSDKSignatureSHA(noncestr,
-		// jsapiTicket, timestamp, url);
-		System.out.println(getCommonAccessToken());
+	/**
+	 * 将用户认证上传的图片从微信服务器转存到对应的阿里云OSS服务器
+	 * 
+	 * @param mediaId
+	 * @param userId
+	 * @return OSS服务的文件名
+	 */
+	public static String uploadUserAuthFileToOSS(String mediaId, String userId) {
+		if (StringUtil.isBlank(mediaId)) {
+			throw new SDKException("转存失败，缺少微信媒体文件标识");
+		}
+		if (StringUtil.isBlank(userId)) {
+			throw new SDKException("转存失败，缺少用户ID");
+		}
+		String access_token = WXHelpUtil.getCommonAccessToken();
+		String apiURL = GlobalSettings.getWeiXinMediaGetAPI() + "?access_token=" + access_token + "&media_id="
+				+ mediaId;
+
+		URL url;
+		try {
+			url = new URL(apiURL);
+		} catch (MalformedURLException e) {
+			LOG.error("微信媒体文件转存失败", e);
+			throw new SDKException("转存失败", e);
+		}
+		HttpURLConnection conn;
+		try {
+			conn = (HttpURLConnection) url.openConnection();
+		} catch (IOException e) {
+			LOG.error("微信媒体文件转存失败", e);
+			throw new SDKException("转存失败", e);
+		}
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setUseCaches(false);
+		try {
+			conn.setRequestMethod("GET");
+		} catch (ProtocolException e) {
+			LOG.error("微信媒体文件转存失败", e);
+			throw new SDKException("转存失败", e);
+		}
+		conn.setRequestProperty("Connection", "Keep-Alive");
+		conn.setRequestProperty("Cache-Control", "no-cache");
+		conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + System.currentTimeMillis());
+		InputStream in = null;
+		try {
+			in = conn.getInputStream();
+		} catch (IOException e) {
+			LOG.error("微信媒体文件转存失败", e);
+			throw new SDKException("转存失败", e);
+		}
+
+		String fileName = "user-auth/" + userId + "/" + RandomUtil.generateNumber(6) + ".png";
+
+		OSSClient ossClient = OSSFactory.getOSSClient();
+		ossClient.putObject(new PutObjectRequest(GlobalSettings.getHarborImagesBucketName(), fileName, in)
+				.<PutObjectRequest> withProgressListener(new PutObjectProgressListener()));
+		ossClient.shutdown();
+		try {
+			in.close();
+		} catch (IOException e) {
+			LOG.error("微信媒体文件转存输入流关闭失败", e);
+		}
+
+		try {
+			conn.disconnect();
+		} catch (Exception e) {
+			LOG.error("微信媒体文件转存http连接关闭失败", e);
+		}
+		return fileName;
+
 	}
 
 }

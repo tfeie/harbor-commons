@@ -12,6 +12,8 @@ import com.aliyun.oss.event.ProgressEventType;
 import com.aliyun.oss.event.ProgressListener;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.the.harbor.base.exception.SystemException;
+import com.the.harbor.commons.components.aliyuncs.oss.OSSFactory;
+import com.the.harbor.commons.components.globalconfig.GlobalSettings;
 import com.the.harbor.commons.components.weixin.WXHelpUtil;
 import com.the.harbor.commons.exception.SDKException;
 import com.the.harbor.commons.util.RandomUtil;
@@ -40,6 +42,7 @@ public class AliyunOSSTest {
 				e.printStackTrace();
 				throw new SystemException(e.getMessage());
 			}
+
 		} catch (ConnectException ce) {
 			throw new SDKException("连接异常", ce);
 		} catch (Exception e) {
@@ -49,17 +52,12 @@ public class AliyunOSSTest {
 	}
 
 	public static void putOSS(InputStream inputStream) throws Throwable {
-		// endpoint以杭州为例，其它region请按实际情况填写
-		String endpoint = "oss-cn-beijing.aliyuncs.com";
-		// accessKey请登录https://ak-console.aliyun.com/#/查看
-		String accessKeyId = "9iqLEjXb3mC9s6rP";
-		String accessKeySecret = "XPazTTqPAhLa5GfSmkuYRwLeLdoiWC";
-		// 创建OSSClient实例
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		OSSClient ossClient = OSSFactory.getOSSClient();
 
 		long time1 = System.currentTimeMillis();
-		ossClient.putObject(new PutObjectRequest("harbor-images", RandomUtil.generateNumber(6) + ".png", inputStream)
-				.<PutObjectRequest> withProgressListener(new PutObjectProgressListener()));
+		ossClient.putObject(
+				new PutObjectRequest(GlobalSettings.getHarborImagesBucketName(), RandomUtil.generateNumber(6) + ".png",
+						inputStream).<PutObjectRequest> withProgressListener(new PutObjectProgressListener()));
 
 		long time2 = System.currentTimeMillis();
 		System.out.println(time2 - time1);
@@ -68,11 +66,10 @@ public class AliyunOSSTest {
 	}
 
 	public static void main(String[] args) throws Throwable {
-		String media_id = "w9enyrJJsgmjJL33F7M176Z4dLIqihSZ8pwDFWAGzFYF_uMf7GW4cuZUyaQ6UyQN";
-		String access_token = WXHelpUtil.getCommonAccessToken();
-		String url = "http://file.api.weixin.qq.com/cgi-bin/media/get?" + "access_token=" + access_token + "&media_id="
-				+ media_id;
-		uploadFile2OSS(url);
+		String mediaId = "w9enyrJJsgmjJL33F7M176Z4dLIqihSZ8pwDFWAGzFYF_uMf7GW4cuZUyaQ6UyQN";
+		String userId ="zhangchao";
+		String fileName=WXHelpUtil.uploadUserAuthFileToOSS(mediaId, userId);
+		System.out.println(fileName);
 	}
 
 	/**
