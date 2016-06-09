@@ -9,7 +9,6 @@ import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.common.ClientException;
 import com.aliyun.mns.common.ServiceException;
 import com.aliyun.mns.model.Message;
-import com.taobao.api.ApiException;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 import com.the.harbor.commons.components.aliyuncs.mns.MNSFactory;
@@ -43,18 +42,19 @@ public final class SMSSender {
 		AlibabaAliqinFcSmsNumSendResponse resp = null;
 		try {
 			resp = SMSFactory.getTaobaoClient().execute(req);
-			boolean success = resp.getResult().getSuccess();
-			if (success) {
-				status = "10";
-				remark = "发送成功";
-			} else {
-				status = "11";
-				remark = StringUtil.restrictLength("发送失败:" + resp.getResult().getMsg(), 350);
+			if (!"0".equals(resp.getErrorCode())) {
+				throw new SDKException("发送失败:" + resp.getSubMsg());
 			}
-		} catch (ApiException e) {
+			boolean success = resp.getResult().getSuccess();
+			if (!success) {
+				throw new SDKException("发送失败:" + resp.getResult().getMsg());
+			}
+			status = "10";
+			remark = "发送成功";
+		} catch (Exception e) {
 			// 标记为失败
 			status = "11";
-			remark = StringUtil.restrictLength("发送失败:" + e.getErrMsg(), 350);
+			remark = StringUtil.restrictLength("发送失败:" + e.getMessage(), 350);
 			LOG.error("短信发送失败", e);
 		}
 		// 组织短信发送模板消息
@@ -93,7 +93,7 @@ public final class SMSSender {
 			} else if (se.getErrorCode().equals("TimeExpired")) {
 				LOG.error("The request is time expired. Please check your local machine timeclock", se);
 			}
-			LOG.error("SMS  message put in Queue error",se);
+			LOG.error("SMS  message put in Queue error", se);
 		} catch (Exception e) {
 			LOG.error("Unknown exception happened!", e);
 		}
