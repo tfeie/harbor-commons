@@ -10,12 +10,26 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.PutObjectRequest;
+import com.the.harbor.base.enumeration.weixin.unifiedorder.DeviceInfo;
+import com.the.harbor.base.enumeration.weixin.unifiedorder.FeeType;
+import com.the.harbor.base.enumeration.weixin.unifiedorder.TradeType;
 import com.the.harbor.commons.components.aliyuncs.oss.OSSFactory;
 import com.the.harbor.commons.components.aliyuncs.oss.PutObjectProgressListener;
 import com.the.harbor.commons.components.globalconfig.GlobalSettings;
@@ -23,8 +37,11 @@ import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.exception.SDKException;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
 import com.the.harbor.commons.util.HttpUtil;
+import com.the.harbor.commons.util.MD5Util;
 import com.the.harbor.commons.util.RandomUtil;
 import com.the.harbor.commons.util.StringUtil;
+
+import net.sf.json.xml.XMLSerializer;
 
 public final class WXHelpUtil {
 
@@ -221,6 +238,148 @@ public final class WXHelpUtil {
 		}
 		return fileName;
 
+	}
+
+	/**
+	 * 获取JSSDK支付接口所需要的package属性值
+	 * 
+	 * @param body
+	 * @param outTradeNo
+	 * @param totalFee
+	 * @param spbillCreateIp
+	 * @param openId
+	 * @param notifyUrl
+	 * @return
+	 */
+	public static String getPackageOfWXJSSDKChoosePayAPI(String body, String outTradeNo, int totalFee,
+			String spbillCreateIp, String openId, String notifyUrl, String nonceStr) {
+		JSONObject data = wxUnifiedorder(body, outTradeNo, totalFee, spbillCreateIp, openId, notifyUrl, nonceStr);
+		String returnCode = data.getString("return_code");
+		String resultCode = data.getString("result_code");
+		String prepayId = null;
+		if ("SUCCESS".equals(resultCode) && "SUCCESS".equals(returnCode)) {
+			prepayId = data.getString("prepay_id");
+		} else {
+			throw new SDKException("获取微信支付预交易流水失败:" + data.getString("err_code_des"));
+		}
+		String pkg = "prepay_id=" + prepayId;
+		return pkg;
+	}
+
+	/**
+	 * 生成JSSDK支付接口需要的支付签名参数
+	 * 
+	 * @param timeStamp
+	 * @param nonceStr
+	 * @param pkg
+	 * @param signType
+	 * @return
+	 */
+	public static String getPaySignOfWXJSSDKChoosePayAPI(String timeStamp, String nonceStr, String pkg) {
+		SortedMap<String, Object> map = new TreeMap<String, Object>();
+		map.put("appId", GlobalSettings.getWeiXinAppId());
+		map.put("timeStamp", timeStamp);
+		map.put("nonceStr", nonceStr);
+		map.put("pkg", pkg);
+		map.put("signType", "MD5");
+		String paysecret = GlobalSettings.getWeiXinPaySecret();
+		String paySign = createSign(map, paysecret);
+		return paySign;
+	}
+
+	/**
+	 * 微信公众号统一下单服务
+	 * 
+	 * @param body
+	 * @param outTradeNo
+	 * @param totalFee
+	 * @param spbillCreateIp
+	 * @param openId
+	 * @param notifyUrl
+	 * @return
+	 */
+	public static JSONObject wxUnifiedorder(String body, String outTradeNo, int totalFee, String spbillCreateIp,
+			String openId, String notifyUrl, String nonceStr) {
+		String paysecret = GlobalSettings.getWeiXinPaySecret();
+		String url = GlobalSettings.getWeiXinMCHPayUnifiedorderAPI();
+		SortedMap<String, Object> map = new TreeMap<String, Object>();
+		map.put("appid", GlobalSettings.getWeiXinAppId());
+		map.put("body", body);
+		map.put("device_info", DeviceInfo.WEB.getValue());
+		map.put("fee_type", FeeType.CNY.getValue());
+		map.put("mch_id", GlobalSettings.getWeiXinMerchantId());
+		map.put("nonce_str", nonceStr);
+		map.put("notify_url", notifyUrl);
+		map.put("openid", openId);
+		map.put("out_trade_no", outTradeNo);
+		map.put("spbill_create_ip", spbillCreateIp);
+		map.put("total_fee", totalFee);
+		map.put("trade_type", TradeType.JSAPI.getValue());
+
+		String sign = createSign(map, paysecret);
+		map.put("sign", sign);
+
+		// 将参数转化成XML格式
+		String postXML = convertMap2XML(map);
+
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setEntity(new StringEntity(postXML, "UTF-8"));
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			CloseableHttpResponse response = httpclient.execute(httpPost);
+			String xml = EntityUtils.toString(response.getEntity(), "UTF-8");
+			String jsonStr = new XMLSerializer().read(xml).toString();
+			JSONObject data = JSON.parseObject(jsonStr);
+			return data;
+		} catch (IOException e) {
+			LOG.error("统一支付订单异常", e);
+			throw new SDKException("微信统一下单订单异常");
+		}
+
+	}
+
+	/**
+	 * 创建支付签名
+	 * 
+	 * @param pMap
+	 * @param paysecret
+	 *            支付密钥
+	 * @return
+	 */
+	public static String createSign(SortedMap<String, Object> pMap, String paysecret) {
+		StringBuffer sb = new StringBuffer();
+		Iterator<Entry<String, Object>> it = pMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Object> entry = it.next();
+			String key = entry.getKey();
+			Object value = entry.getValue();
+			if (null != value && !StringUtil.isBlank(value.toString()) && !"sign".equals(key) && !"key".equals(key)) {
+				sb.append(key + "=" + value + "&");
+			}
+		}
+		sb.append("key=" + paysecret);
+		String sign = MD5Util.MD5Encode(sb.toString(), "UTF-8").toUpperCase();
+		return sign;
+	}
+
+	/**
+	 * 将参数MAP转换为XML
+	 * 
+	 * @param pMap
+	 * @return
+	 */
+	private static String convertMap2XML(SortedMap<String, Object> pMap) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<xml>");
+		Iterator<Entry<String, Object>> it = pMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Object> entry = it.next();
+			String key = entry.getKey();
+			Object value = entry.getValue();
+			sb.append("<" + key + ">" + value + "</" + key + ">");
+		}
+		sb.append("</xml>");
+		return sb.toString();
 	}
 
 }
