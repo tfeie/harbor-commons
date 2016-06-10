@@ -6,22 +6,21 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 import com.the.harbor.commons.components.aliyuncs.sms.SMSSender;
 import com.the.harbor.commons.components.aliyuncs.sms.param.SMSSendRequest;
+import com.the.harbor.commons.components.globalconfig.GlobalSettings;
 
 public class SMSSenderTest {
 
 	public static void main(String[] args) {
 		SMSSendRequest req = new SMSSendRequest();
 		List<String> recNumbers = new ArrayList<String>();
-		recNumbers.add("18610316986");
-		//recNumbers.add("18601179558");
+		recNumbers.add("18601179558");
 		JSONObject smsParams = new JSONObject();
-		smsParams.put("code", "2111");
-		smsParams.put("product", "SLP");
+		smsParams.put("randomCode", "1234");
 		req.setRecNumbers(recNumbers);
-		req.setSmsFreeSignName("注册验证");
+		req.setSmsFreeSignName(GlobalSettings.getSMSFreeSignName());
 		req.setSmsParams(smsParams);
-		req.setSmsTemplateCode("SMS_10150871");
-		SMSSender.send(req);
+		req.setSmsTemplateCode(GlobalSettings.getSMSUserRandomCodeTemplate());
+		SMSSender.send(req); 
 	}
 
 }
