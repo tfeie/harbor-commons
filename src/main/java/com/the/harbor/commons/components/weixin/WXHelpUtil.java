@@ -260,7 +260,7 @@ public final class WXHelpUtil {
 		if ("SUCCESS".equals(resultCode) && "SUCCESS".equals(returnCode)) {
 			prepayId = data.getString("prepay_id");
 		} else {
-			throw new SDKException("获取微信支付预交易流水失败:" + data.getString("err_code_des"));
+			throw new SDKException("获取微信支付预交易流水失败:" + data.getString("return_msg"));
 		}
 		String pkg = "prepay_id=" + prepayId;
 		return pkg;
