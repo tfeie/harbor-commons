@@ -280,7 +280,7 @@ public final class WXHelpUtil {
 		map.put("appId", GlobalSettings.getWeiXinAppId());
 		map.put("timeStamp", timeStamp);
 		map.put("nonceStr", nonceStr);
-		map.put("pkg", pkg);
+		map.put("package", pkg);
 		map.put("signType", "MD5");
 		String paysecret = GlobalSettings.getWeiXinPaySecret();
 		String paySign = createSign(map, paysecret);
