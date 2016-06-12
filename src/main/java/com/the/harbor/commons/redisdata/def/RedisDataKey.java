@@ -13,6 +13,8 @@ public enum RedisDataKey {
 	KEY_BASE_INTEREST_TAGS("harbor.base.interest.tags", "所有的基础用户兴趣标签"),
 
 	KEY_BASE_SKILL_TAGS("harbor.base.skill.tags", "所有的基础用户技能标签"),
+	
+	KEY_WEIXIN_REG_USER("harbor.weixin.register.user","记录所有微信已经注册成用户的信息,二级key为openId,值为UserInfo"),
 
 	KEY_WEIXIN_COMMON_TOKEN("harbor.weixin.common.token", "微信公众号基础token存储,一般2小时候失效"),
 
