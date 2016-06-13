@@ -302,6 +302,7 @@ public final class GlobalSettings {
 
 	/**
 	 * 预设的会员购买服务价格
+	 * 
 	 * @return
 	 */
 	public static List<MemeberPrice> getMemeberPrices() {
@@ -311,6 +312,19 @@ public final class GlobalSettings {
 		}
 		List<MemeberPrice> list = JSONArray.parseArray(conf, MemeberPrice.class);
 		return list;
+	}
+
+	/**
+	 * 获取微信支付结果回调通知地址
+	 * 
+	 * @return
+	 */
+	public static final String getHarborWXPayNotifyURL() {
+		String url = properties.getProperty("harbor.weixin.pay.notify.url");
+		if (StringUtil.isBlank(url)) {
+			throw new SDKException("can not get harbor.weixin.pay.notify.url from the file: " + SETTINGS_FILE_NAME);
+		}
+		return url;
 	}
 
 }
