@@ -17,6 +17,11 @@ public final class HyDictUtil {
 		return data == null ? null : JSON.parseArray(data, HyDictsVo.class);
 	}
 
+	public static List<HyDictsVo> getHyDicts(String key) {
+		String data = CacheFactory.getClient().hget(RedisDataKey.KEY_ALL_DICTS.getKey(), key);
+		return data == null ? null : JSON.parseArray(data, HyDictsVo.class);
+	}
+
 	public static HyDictsVo getHyDict(String typeCode, String paramCode, String paramValue) {
 		String key = typeCode + SPLIT + paramCode + SPLIT + paramValue;
 		String data = CacheFactory.getClient().hget(RedisDataKey.KEY_SINGLE_DICT.getKey(), key);
