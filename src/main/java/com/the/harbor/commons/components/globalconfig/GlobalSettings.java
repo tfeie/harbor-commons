@@ -327,4 +327,30 @@ public final class GlobalSettings {
 		return url;
 	}
 
+	/**
+	 * 用户默认的系统头像地址
+	 * 
+	 * @return
+	 */
+	public static final String getHarborUserDefaultHeadICONURL() {
+		String url = properties.getProperty("harbor.user.default.headicon.url");
+		if (StringUtil.isBlank(url)) {
+			throw new SDKException("can not get harbor.user.default.headicon.url from the file: " + SETTINGS_FILE_NAME);
+		}
+		return url;
+	}
+
+	/**
+	 * 用户默认的主页头像地址
+	 * 
+	 * @return
+	 */
+	public static final String getHarborUserDefaultHomePageBGURL() {
+		String url = properties.getProperty("harbor.user.default.homepagebg.url");
+		if (StringUtil.isBlank(url)) {
+			throw new SDKException(
+					"can not get harbor.user.default.homepagebg.url from the file: " + SETTINGS_FILE_NAME);
+		}
+		return url;
+	}
 }
