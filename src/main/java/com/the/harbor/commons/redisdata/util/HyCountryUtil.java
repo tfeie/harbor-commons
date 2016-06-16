@@ -20,4 +20,9 @@ public final class HyCountryUtil {
 		return data == null ? null : JSONArray.parseArray(data, HyCountryVo.class);
 	}
 
+	public static String getHyCountryName(String countryCode) {
+		HyCountryVo b = getHyCountry(countryCode);
+		return b == null ? null : b.getCountryName();
+	}
+
 }

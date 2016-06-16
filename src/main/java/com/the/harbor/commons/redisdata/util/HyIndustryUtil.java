@@ -20,4 +20,9 @@ public final class HyIndustryUtil {
 		return data == null ? null : JSONArray.parseArray(data, HyIndustryVo.class);
 	}
 
+	public static String getHyIndustryName(String industryCode) {
+		HyIndustryVo b = getHyIndustry(industryCode);
+		return b == null ? null : b.getIndustryName();
+	}
+
 }
