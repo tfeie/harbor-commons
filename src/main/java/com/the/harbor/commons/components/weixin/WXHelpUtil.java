@@ -36,6 +36,7 @@ import com.the.harbor.commons.components.globalconfig.GlobalSettings;
 import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.exception.SDKException;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
+import com.the.harbor.commons.util.DateUtil;
 import com.the.harbor.commons.util.HttpUtil;
 import com.the.harbor.commons.util.MD5Util;
 import com.the.harbor.commons.util.RandomUtil;
@@ -181,6 +182,55 @@ public final class WXHelpUtil {
 		if (StringUtil.isBlank(userId)) {
 			throw new SDKException("转存失败，缺少用户ID");
 		}
+		String fileName = "user-auth/" + userId + "/" + DateUtil.getDateString(DateUtil.YYYYMMDDHHMMSS) + ".png";
+		transerWXFile2OSS(mediaId, fileName);
+		return fileName;
+	}
+	
+	/**
+	 * 转存用户头像到阿里云OSS服务
+	 * @param mediaId
+	 * @param userId
+	 * @return
+	 */
+	public static String uploadUserHeadIconToOSS(String mediaId, String userId) {
+		if (StringUtil.isBlank(mediaId)) {
+			throw new SDKException("转存失败，缺少微信媒体文件标识");
+		}
+		if (StringUtil.isBlank(userId)) {
+			throw new SDKException("转存失败，缺少用户ID");
+		}
+		String fileName = "user-icon/" + userId + "/" + DateUtil.getDateString(DateUtil.YYYYMMDDHHMMSS) + ".png";
+		transerWXFile2OSS(mediaId, fileName);
+		return fileName;
+	}
+	
+	/**
+	 * 转存用户主页背景到阿里云OSS服务
+	 * @param mediaId
+	 * @param userId
+	 * @return
+	 */
+	public static String uploadUserHomeBgToOSS(String mediaId, String userId) {
+		if (StringUtil.isBlank(mediaId)) {
+			throw new SDKException("转存失败，缺少微信媒体文件标识");
+		}
+		if (StringUtil.isBlank(userId)) {
+			throw new SDKException("转存失败，缺少用户ID");
+		}
+		String fileName = "user-homebg/" + userId + "/" + DateUtil.getDateString(DateUtil.YYYYMMDDHHMMSS) + ".png";
+		transerWXFile2OSS(mediaId, fileName);
+		return fileName;
+	}
+	
+
+	public static void transerWXFile2OSS(String mediaId, String fileName) {
+		if (StringUtil.isBlank(mediaId)) {
+			throw new SDKException("转存失败，缺少微信媒体文件标识");
+		}
+		if (StringUtil.isBlank(fileName)) {
+			throw new SDKException("转存失败，缺少转存文件名");
+		}
 		String access_token = WXHelpUtil.getCommonAccessToken();
 		String apiURL = GlobalSettings.getWeiXinMediaGetAPI() + "?access_token=" + access_token + "&media_id="
 				+ mediaId;
@@ -218,9 +268,6 @@ public final class WXHelpUtil {
 			LOG.error("微信媒体文件转存失败", e);
 			throw new SDKException("转存失败", e);
 		}
-
-		String fileName = "user-auth/" + userId + "/" + RandomUtil.generateNumber(6) + ".png";
-
 		OSSClient ossClient = OSSFactory.getOSSClient();
 		ossClient.putObject(new PutObjectRequest(GlobalSettings.getHarborImagesBucketName(), fileName, in)
 				.<PutObjectRequest> withProgressListener(new PutObjectProgressListener()));
@@ -236,8 +283,6 @@ public final class WXHelpUtil {
 		} catch (Exception e) {
 			LOG.error("微信媒体文件转存http连接关闭失败", e);
 		}
-		return fileName;
-
 	}
 
 	/**
