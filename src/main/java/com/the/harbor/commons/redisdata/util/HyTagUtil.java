@@ -19,4 +19,14 @@ public class HyTagUtil {
 		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
 	}
 
+	public static List<HyTagVo> getAllGoTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_GO_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
+	public static List<HyTagVo> getAllBeTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_BE_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
 }
