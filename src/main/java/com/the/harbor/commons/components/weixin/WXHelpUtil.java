@@ -186,9 +186,10 @@ public final class WXHelpUtil {
 		transerWXFile2OSS(mediaId, fileName);
 		return fileName;
 	}
-	
+
 	/**
 	 * 转存用户头像到阿里云OSS服务
+	 * 
 	 * @param mediaId
 	 * @param userId
 	 * @return
@@ -204,9 +205,10 @@ public final class WXHelpUtil {
 		transerWXFile2OSS(mediaId, fileName);
 		return fileName;
 	}
-	
+
 	/**
 	 * 转存用户主页背景到阿里云OSS服务
+	 * 
 	 * @param mediaId
 	 * @param userId
 	 * @return
@@ -222,7 +224,19 @@ public final class WXHelpUtil {
 		transerWXFile2OSS(mediaId, fileName);
 		return fileName;
 	}
-	
+
+	public static String uploadGoImgToOSS(String mediaId, String userId) {
+		if (StringUtil.isBlank(mediaId)) {
+			throw new SDKException("转存失败，缺少微信媒体文件标识");
+		}
+		if (StringUtil.isBlank(userId)) {
+			throw new SDKException("转存失败，缺少用户ID");
+		}
+		String date = DateUtil.getDateString(DateUtil.YYYYMMDD);
+		String fileName = "go/" + date + "/" + userId + "/" + DateUtil.getDateString(DateUtil.YYYYMMDDHHMMSS) + ".png";
+		transerWXFile2OSS(mediaId, fileName);
+		return fileName;
+	}
 
 	public static void transerWXFile2OSS(String mediaId, String fileName) {
 		if (StringUtil.isBlank(mediaId)) {
