@@ -9,6 +9,8 @@ import javax.validation.ConstraintViolationException;
 import com.alibaba.dubbo.rpc.RpcResult;
 import com.the.harbor.base.constants.ExceptCodeConstants;
 import com.the.harbor.base.exception.BusinessException;
+import com.the.harbor.base.exception.GenericException;
+import com.the.harbor.base.exception.SystemException;
 import com.the.harbor.base.vo.Response;
 import com.the.harbor.base.vo.ResponseHeader;
 import com.the.harbor.commons.exception.SDKException;
@@ -23,6 +25,35 @@ public final class ExceptionUtil {
 	public static String getTrace(Throwable t) {
 		StringWriter stringWriter = new StringWriter();
 		return stringWriter.getBuffer().toString();
+	}
+
+	public static final GenericException convert2GenericException(Exception ex) {
+		GenericException e = null;
+		if (ex instanceof BusinessException) {
+			e = (BusinessException) ex;
+		} else if (ex instanceof SDKException) {
+			e = new SystemException(ex.getMessage());
+		} else if (ex instanceof SystemException) {
+			e = (SystemException) ex;
+		} else {
+			String error = null;
+			if (ex.getCause() instanceof ConstraintViolationException) {
+				ConstraintViolationException ve = (ConstraintViolationException) ex.getCause();
+				Set<ConstraintViolation<?>> violations = ve.getConstraintViolations();
+				if (violations != null && violations.size() > 0) {
+					for (ConstraintViolation<?> cv : violations) {
+						error = cv.getMessage();
+						break;
+					}
+				}
+			}
+			if (!StringUtil.isBlank(error)) {
+				e = new SystemException(error);
+			} else {
+				e = new SystemException(ex);
+			}
+		}
+		return e;
 	}
 
 	public static final <T> ResponseData<T> convert(Exception ex, Class<T> clazz) {
