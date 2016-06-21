@@ -314,13 +314,16 @@ public final class WXHelpUtil {
 			String spbillCreateIp, String openId, String notifyUrl, String nonceStr) {
 		JSONObject data = wxUnifiedorder(body, outTradeNo, totalFee, spbillCreateIp, openId, notifyUrl, nonceStr);
 		String returnCode = data.getString("return_code");
-		String resultCode = data.getString("result_code");
-		String prepayId = null;
-		if ("SUCCESS".equals(resultCode) && "SUCCESS".equals(returnCode)) {
-			prepayId = data.getString("prepay_id");
-		} else {
-			throw new SDKException("获取微信支付预交易流水失败:" + data.getString("return_msg"));
+		String returnMsg=data.getString("return_msg");
+		if("FAIL".equals(returnCode)){
+			throw new SDKException("微信统一下单调用失败:" + returnMsg);
 		}
+		String resultCode = data.getString("result_code");
+		String errCodeDes= data.getString("err_code_des");
+		if("FAIL".equals(resultCode)){
+			throw new SDKException("微信统一下单调用失败:" + errCodeDes);
+		}
+		String prepayId = data.getString("prepay_id");
 		String pkg = "prepay_id=" + prepayId;
 		return pkg;
 	}
