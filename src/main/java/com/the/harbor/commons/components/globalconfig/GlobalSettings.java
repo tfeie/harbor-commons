@@ -249,6 +249,19 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * BE索引异步构建
+	 * 
+	 * @return
+	 */
+	public static final String getBeIndexBuildQueueName() {
+		String queue = properties.getProperty("harbor.mns.be.indexbuild.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.be.indexbuild.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 获取微信普通TOKEN的API
 	 * 
 	 * @return
