@@ -237,6 +237,19 @@ public final class WXHelpUtil {
 		transerWXFile2OSS(mediaId, fileName);
 		return fileName;
 	}
+	
+	public static String uploadBeImgToOSS(String mediaId, String userId) {
+		if (StringUtil.isBlank(mediaId)) {
+			throw new SDKException("转存失败，缺少微信媒体文件标识");
+		}
+		if (StringUtil.isBlank(userId)) {
+			throw new SDKException("转存失败，缺少用户ID");
+		}
+		String date = DateUtil.getDateString(DateUtil.YYYYMMDD);
+		String fileName = "be/" + date + "/" + userId + "/" + DateUtil.getDateString(DateUtil.YYYYMMDDHHMMSS) + ".png";
+		transerWXFile2OSS(mediaId, fileName);
+		return fileName;
+	}
 
 	public static void transerWXFile2OSS(String mediaId, String fileName) {
 		if (StringUtil.isBlank(mediaId)) {
