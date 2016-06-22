@@ -48,8 +48,8 @@ public final class UniversityHandler {
             String jsonSource = gson.toJson(jo);
             bulkRequest.add(ElasticSearchFactory
                     .getClient()
-                    .prepareIndex(HarborIndex.HY_UNIVERSITY.getName(),
-                            HarborIndexType.DETAIL.getName(), u.getUniversityId())
+                    .prepareIndex(HarborIndex.HY_COMMON_DB.getValue(),
+                            HarborIndexType.HY_UNIVERSITY.getValue(), u.getUniversityId())
                     .setSource(jsonSource));
         }
         BulkResponse bulkResponse = bulkRequest.execute().actionGet();
@@ -69,7 +69,7 @@ public final class UniversityHandler {
         suggestionsBuilder.field("universityNameSuggest");
         suggestionsBuilder.size(10);
         SuggestResponse resp = ElasticSearchFactory.getClient()
-                .prepareSuggest(HarborIndex.HY_UNIVERSITY.getName())
+                .prepareSuggest(HarborIndex.HY_COMMON_DB.getValue())
                 .addSuggestion(suggestionsBuilder).execute().actionGet();
         List<? extends Entry<? extends Option>> list = resp.getSuggest().getSuggestion("complete")
                 .getEntries();

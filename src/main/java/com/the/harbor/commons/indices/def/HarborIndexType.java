@@ -1,30 +1,35 @@
 package com.the.harbor.commons.indices.def;
 
-public enum HarborIndexType {
+import com.the.harbor.base.enumeration.base.Behaviour;
 
-    DETAIL("detail", "详细数据");
+public enum HarborIndexType implements Behaviour {
 
-    private HarborIndexType(String name, String desc) {
-        this.name = name;
-        this.desc = desc;
-    }
+	HY_UNIVERSITY("hy_university", "海外学校数据"),
 
-    /**
-     * 索引名称
-     */
-    private String name;
+	HY_BE("hy_be", "用户发表的BE");
 
-    /**
-     * 索引描述
-     */
-    private String desc;
+	private String value;
 
-    public String getName() {
-        return name;
-    }
+	private String desc;
 
-    public String getDesc() {
-        return desc;
-    }
+	private HarborIndexType(String value, String desc) {
+		this.value = value;
+		this.desc = desc;
+	}
+
+	@Override
+	public String toString() {
+		return this.value + " is " + this.desc;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value;
+	}
+
+	@Override
+	public String getDesc() {
+		return this.desc;
+	}
 
 }

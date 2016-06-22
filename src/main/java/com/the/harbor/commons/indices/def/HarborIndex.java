@@ -1,30 +1,39 @@
 package com.the.harbor.commons.indices.def;
 
-public enum HarborIndex {
+import com.the.harbor.base.enumeration.base.Behaviour;
 
-    HY_UNIVERSITY("hy_university", "海外学校数据索引");
+public enum HarborIndex implements Behaviour {
 
-    private HarborIndex(String name, String desc) {
-        this.name = name;
-        this.desc = desc;
-    }
+	HY_COMMON_DB("hy_common_db", "公共数据组"),
 
-    /**
-     * 索引名称
-     */
-    private String name;
+	HY_BE_DB("hy_be_db", "be数据组"),
 
-    /**
-     * 索引描述
-     */
-    private String desc;
+	HY_COMMENT_DB("hy_comment_db", "用户评价组"),
 
-    public String getName() {
-        return name;
-    }
+	HY_GO_DB("hy_go_db", "go数据组");
 
-    public String getDesc() {
-        return desc;
-    }
+	private String value;
+
+	private String desc;
+
+	private HarborIndex(String value, String desc) {
+		this.value = value;
+		this.desc = desc;
+	}
+
+	@Override
+	public String toString() {
+		return this.value + " is " + this.desc;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value;
+	}
+
+	@Override
+	public String getDesc() {
+		return this.desc;
+	}
 
 }
