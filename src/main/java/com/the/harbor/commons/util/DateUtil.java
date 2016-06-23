@@ -861,4 +861,25 @@ public final class DateUtil {
 		}
 		return interval;
 	}
+
+	public static int getMonth(Timestamp time) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(time);
+		int month = cal.get(Calendar.MONTH);
+		return month;
+	}
+
+	public static int getYear(Timestamp time) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(time);
+		int year = cal.get(Calendar.YEAR);
+		return year;
+	}
+
+	public static int getDay(Timestamp time) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(time);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		return day;
+	}
 }
