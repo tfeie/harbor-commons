@@ -824,11 +824,11 @@ public final class DateUtil {
 		String interval = null;
 		// 用现在距离1970年的时间间隔new
 		// Date().getTime()减去以前的时间距离1970年的时间间隔d1.getTime()得出的就是以前的时间与现在时间的时间间隔
-		long time = new Date().getTime() - nowdate.getTime();// 得出的时间间隔是毫秒
+		long time = DateUtil.getSysDate().getTime() - nowdate.getTime();// 得出的时间间隔是毫秒
 		if (time / 1000 < 10 && time / 1000 >= 0) {
 			// 如果时间间隔小于10秒则显示“刚刚”time/10得出的时间间隔的单位是秒
 			interval = "刚刚";
-		} else if (time / 3600000 < 24 && time / 3600000 >= 0) {
+		} else if (time / 3600000 < 24 && time / 3600000 > 0) {
 			// 如果时间间隔小于24小时则显示多少小时前
 			int h = (int) (time / 3600000);// 得出的时间间隔的单位是小时
 			interval = h + "小时前";
@@ -846,21 +846,7 @@ public final class DateUtil {
 			interval = days + "天前";
 		}
 		return interval;
-	}
-
-	public static String getInterval2(Timestamp nowdate) {
-		String interval = null;
-		// 计算天数差别
-		long days = DateUtil.getTimeDifference(getSysDate(), nowdate);
-		if (days == 0) {
-			interval = "今天";
-		} else if (days == 1) {
-			interval = "昨天";
-		} else {
-			interval = DateUtil.getDateString(nowdate, DateUtil.DATETIME_FORMAT);
-		}
-		return interval;
-	}
+	} 
 
 	public static int getMonth(Timestamp time) {
 		Calendar cal = Calendar.getInstance();
