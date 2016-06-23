@@ -847,4 +847,18 @@ public final class DateUtil {
 		}
 		return interval;
 	}
+
+	public static String getInterval2(Timestamp nowdate) {
+		String interval = null;
+		// 计算天数差别
+		long days = DateUtil.getTimeDifference(getSysDate(), nowdate);
+		if (days == 0) {
+			interval = "今天";
+		} else if (days == 1) {
+			interval = "昨天";
+		} else {
+			interval = DateUtil.getDateString(nowdate, DateUtil.DATETIME_FORMAT);
+		}
+		return interval;
+	}
 }
