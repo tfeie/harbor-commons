@@ -1,5 +1,7 @@
 package com.the.harbor.commons.redisdata.util;
 
+import java.util.Set;
+
 import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.components.redis.interfaces.ICacheClient;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
@@ -41,6 +43,30 @@ public final class HyBeUtil {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_BE_LIKES_PREFFIX.getKey() + beId;
 		cacheClient.sadd(key, userId);
+	}
+
+	/**
+	 * 用户取消点赞
+	 * 
+	 * @param beId
+	 * @param userId
+	 */
+	public static void userCancelZan(String beId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_LIKES_PREFFIX.getKey() + beId;
+		cacheClient.srem(key, userId);
+	}
+
+	/**
+	 * 返回所有点赞的用户集合
+	 * 
+	 * @param beId
+	 * @return
+	 */
+	public static Set<String> getDianzanUsers(String beId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_LIKES_PREFFIX.getKey() + beId;
+		return cacheClient.smembers(key);
 	}
 
 }
