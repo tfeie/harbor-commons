@@ -22,6 +22,8 @@ public enum RedisDataKey {
 
 	KEY_BE_TAGS("harbor.be.tags", "BE系统标签"),
 
+	KEY_BE_LIKES_PREFFIX("harbor.be.likes.beid.", "BE点赞数据缓存KEY前缀，后面加上BEID。值为用户列表"),
+
 	KEY_WEIXIN_REG_USER("harbor.weixin.register.user", "记录所有微信已经注册成用户的信息,二级key为openId,值为UserInfo"),
 
 	KEY_WEIXIN_COMMON_TOKEN("harbor.weixin.common.token", "微信公众号基础token存储,一般2小时候失效"),
