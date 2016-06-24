@@ -23,6 +23,10 @@ public enum RedisDataKey {
 	KEY_BE_TAGS("harbor.be.tags", "BE系统标签"),
 
 	KEY_BE_LIKES_PREFFIX("harbor.be.likes.beid.", "BE点赞数据缓存KEY前缀，后面加上BEID。值为用户列表"),
+	
+	KEY_GO_VIEW_PREFFIX("harbor.go.view.goid.", "GO被查看的数据缓存KEY前缀，后面加上GOID。值为用户列表"),
+	
+	KEY_GO_FAVORITE_PREFFIX("harbor.go.favorite.goid.", "GO被搜藏的数据缓存KEY前缀，后面加上GOID。值为用户列表"),
 
 	KEY_WEIXIN_REG_USER("harbor.weixin.register.user", "记录所有微信已经注册成用户的信息,二级key为openId,值为UserInfo"),
 

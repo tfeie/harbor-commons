@@ -236,7 +236,7 @@ public final class GlobalSettings {
 	}
 
 	/**
-	 * 获取短信发送数据记录处理队列名称
+	 * 获取短信发送数据记录处理队列
 	 * 
 	 * @return
 	 */
@@ -249,7 +249,7 @@ public final class GlobalSettings {
 	}
 
 	/**
-	 * BE索引异步构建
+	 * BE索引异步构建队列
 	 * 
 	 * @return
 	 */
@@ -257,6 +257,20 @@ public final class GlobalSettings {
 		String queue = properties.getProperty("harbor.mns.be.indexbuild.queue");
 		if (StringUtil.isBlank(queue)) {
 			throw new SDKException("can not get harbor.mns.be.indexbuild.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * 用户互动行为消息队列
+	 * 
+	 * @return
+	 */
+	public static final String getUserInteractionQueueName() {
+		String queue = properties.getProperty("harbor.mns.user.interaction.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException(
+					"can not get harbor.mns.user.interaction.queue from the file: " + SETTINGS_FILE_NAME);
 		}
 		return queue;
 	}
