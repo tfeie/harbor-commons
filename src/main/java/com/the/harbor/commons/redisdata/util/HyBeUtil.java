@@ -135,6 +135,18 @@ public final class HyBeUtil {
 	}
 
 	/**
+	 * 获取一条评论的数据
+	 * 
+	 * @param commentId
+	 * @return
+	 */
+	public static String getBeComment(String commentId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_COMMENTS_CONTENT_PREFFIX.getKey() + commentId;
+		return cacheClient.get(key);
+	}
+
+	/**
 	 * 删除一条BE评论内容
 	 * 
 	 * @param commentId
