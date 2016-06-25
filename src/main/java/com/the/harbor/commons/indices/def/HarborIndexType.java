@@ -6,6 +6,8 @@ public enum HarborIndexType implements Behaviour {
 
 	HY_UNIVERSITY("hy_university", "海外学校数据"),
 
+	HY_GO("hy_go", "用户发表的GO"),
+
 	HY_BE("hy_be", "用户发表的BE");
 
 	private String value;

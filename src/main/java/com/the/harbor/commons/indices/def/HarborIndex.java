@@ -8,8 +8,6 @@ public enum HarborIndex implements Behaviour {
 
 	HY_BE_DB("hy_be_db", "be数据组"),
 
-	HY_COMMENT_DB("hy_comment_db", "用户评价组"),
-
 	HY_GO_DB("hy_go_db", "go数据组");
 
 	private String value;
