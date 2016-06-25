@@ -262,6 +262,19 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * GO索引异步构建队列
+	 * 
+	 * @return
+	 */
+	public static final String getGoIndexBuildQueueName() {
+		String queue = properties.getProperty("harbor.mns.go.indexbuild.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.go.indexbuild.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 用户互动行为消息队列
 	 * 
 	 * @return
