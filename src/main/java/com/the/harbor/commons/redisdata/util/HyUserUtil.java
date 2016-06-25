@@ -18,4 +18,14 @@ public final class HyUserUtil {
 		return cacheClient.get(key);
 	}
 
+	public static void buildOpenIdAndUserIdMapped(String openId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		cacheClient.hset(RedisDataKey.KEY_WEIXIN_REG_USER.getKey(), openId, userId);
+	}
+
+	public static String getUserIdByOpenId(String openId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		return cacheClient.hget(RedisDataKey.KEY_WEIXIN_REG_USER.getKey(), openId);
+	}
+
 }
