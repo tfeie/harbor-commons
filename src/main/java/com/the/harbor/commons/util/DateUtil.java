@@ -852,7 +852,7 @@ public final class DateUtil {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(time);
 		int month = cal.get(Calendar.MONTH);
-		return month;
+		return month+1;
 	}
 
 	public static int getYear(Timestamp time) {
