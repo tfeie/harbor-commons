@@ -38,6 +38,10 @@ public enum RedisDataKey {
 
 	KEY_USER_INFO_PREFFIX("harbor.user.userid.", "存储用户资料的KEY前缀，后面加上USERID，值为UserViwInfo的序列化对象"),
 
+	KEY_USER_FANS_GUANZHU_ME_PREFFIX("harbor.user.fans.guanzhume.userid.", "关注我的粉丝记录。值为用户列表"),
+
+	KEY_USER_FANS_I_GUANZHU_PREFFIX("harbor.user.fans.iguanzhu.userid.", "我关注的粉丝记录。值为用户列表"),
+
 	KEY_WEIXIN_REG_USER("harbor.weixin.register.user", "记录所有微信已经注册成用户的信息,二级key为openId,值为userId"),
 
 	KEY_WEIXIN_COMMON_TOKEN("harbor.weixin.common.token", "微信公众号基础token存储,一般2小时候失效"),
