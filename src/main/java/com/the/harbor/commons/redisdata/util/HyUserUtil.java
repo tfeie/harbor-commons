@@ -125,6 +125,18 @@ public final class HyUserUtil {
 		String key1 = RedisDataKey.KEY_USER_FRIEND_APPLY_PREFFIX.getKey() + userA;
 		cacheClient.srem(key1, userB);
 	}
+	
+	/**
+	 * 用户A取消与用户B成为好友
+	 * 
+	 * @param userA
+	 * @param userB
+	 */
+	public static void userARemoveFriendUserB(String userA, String userB) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key1 = RedisDataKey.KEY_USER_FRIEND_BECOME_PREFFIX.getKey() + userA;
+		cacheClient.srem(key1, userB);
+	}
 
 	/**
 	 * 获取用户的所有好友申请
