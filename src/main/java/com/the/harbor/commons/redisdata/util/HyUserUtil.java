@@ -87,7 +87,7 @@ public final class HyUserUtil {
 	}
 
 	/**
-	 * 用户A申请成为用户B的好友
+	 * 用户A申请成为用户B的好友 申请信息记录在B上
 	 * 
 	 * @param userA
 	 * @param userB
@@ -109,9 +109,12 @@ public final class HyUserUtil {
 		// 从申请集合中移除用户B的申请
 		String key = RedisDataKey.KEY_USER_FRIEND_APPLY_PREFFIX.getKey() + userA;
 		cacheClient.srem(key, userB);
-		// 加入到A的好友列表中
+		// 将B加入到A的好友列表中
 		String key1 = RedisDataKey.KEY_USER_FRIEND_BECOME_PREFFIX.getKey() + userA;
 		cacheClient.sadd(key1, userB);
+		// 将A加入到B的好友列表中
+		String key2 = RedisDataKey.KEY_USER_FRIEND_BECOME_PREFFIX.getKey() + userB;
+		cacheClient.sadd(key2, userA);
 	}
 
 	/**
@@ -125,9 +128,9 @@ public final class HyUserUtil {
 		String key1 = RedisDataKey.KEY_USER_FRIEND_APPLY_PREFFIX.getKey() + userA;
 		cacheClient.srem(key1, userB);
 	}
-	
+
 	/**
-	 * 用户A取消与用户B成为好友
+	 * 用户A取消与用户B成为好友，好友关系解除
 	 * 
 	 * @param userA
 	 * @param userB
@@ -136,6 +139,8 @@ public final class HyUserUtil {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key1 = RedisDataKey.KEY_USER_FRIEND_BECOME_PREFFIX.getKey() + userA;
 		cacheClient.srem(key1, userB);
+		String key2 = RedisDataKey.KEY_USER_FRIEND_BECOME_PREFFIX.getKey() + userB;
+		cacheClient.srem(key2, userA);
 	}
 
 	/**
