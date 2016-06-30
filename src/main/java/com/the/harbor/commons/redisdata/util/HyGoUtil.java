@@ -105,7 +105,7 @@ public final class HyGoUtil {
 	 * @param goId
 	 * @return
 	 */
-	public static int getBeCommentsCount(String goId) {
+	public static int getGoCommentsCount(String goId) {
 		Set<String> set = getGoCommentIds(goId, 0, -1);
 		return set.size();
 	}
@@ -128,7 +128,7 @@ public final class HyGoUtil {
 	 * @param commentId
 	 * @return
 	 */
-	public static String getBeComment(String commentId) {
+	public static String getGoComment(String commentId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_COMMENTS_CONTENT_PREFFIX.getKey() + commentId;
 		return cacheClient.get(key);
@@ -139,7 +139,7 @@ public final class HyGoUtil {
 	 * 
 	 * @param commentId
 	 */
-	public static void deleteBeComment(String commentId) {
+	public static void deleteGoComment(String commentId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_COMMENTS_CONTENT_PREFFIX.getKey() + commentId;
 		cacheClient.del(key);
