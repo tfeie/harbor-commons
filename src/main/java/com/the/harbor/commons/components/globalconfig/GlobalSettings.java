@@ -236,6 +236,19 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * 站内系统通知消息处理队列
+	 * 
+	 * @return
+	 */
+	public static final String getNotifyQueueName() {
+		String queue = properties.getProperty("harbor.mns.notify.record.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.notify.record.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 获取短信发送数据记录处理队列
 	 * 
 	 * @return

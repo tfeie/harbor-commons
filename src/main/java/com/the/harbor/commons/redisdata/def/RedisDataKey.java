@@ -22,6 +22,10 @@ public enum RedisDataKey {
 
 	KEY_BE_TAGS("harbor.be.tags", "BE系统标签"),
 
+	KEY_NOTIFY_USER_UNREAD_IDS_PREFFIX("harbor.notify.user.unread.userid.", "记录发送给单个用户的未读消息通知，值为消息notifyId的列表。为sortset类型"),
+
+	KEY_NOTIFY_CONTENT_PREFIX("harbor.notify.content.", "记录消息的内容，key为notifyId,值为xx序列化的值"),
+
 	KEY_BE_LIKES_PREFFIX("harbor.be.likes.beid.", "BE点赞数据缓存KEY前缀，后面加上BEID。值为用户列表"),
 
 	KEY_BE_COMMENTS_IDS_PREFFIX("harbor.be.comments.beid.", "BE评论缓存KEY前缀，后面加上BEID。值为所有评论数据ID"),
