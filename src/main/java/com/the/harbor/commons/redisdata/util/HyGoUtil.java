@@ -131,6 +131,7 @@ public final class HyGoUtil {
 
 	/**
 	 * 记录活动与订单的评论信息
+	 * 
 	 * @param goId
 	 * @param orderId
 	 * @param commentId
@@ -142,6 +143,21 @@ public final class HyGoUtil {
 
 		key = RedisDataKey.KEY_GO_COMMENTS_IDS_PREFFIX.getKey() + goId;
 		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), commentId);
+	}
+
+	/**
+	 * 删除活动订单的评论数据
+	 * @param goId
+	 * @param orderId
+	 * @param commentId
+	 */
+	public static void deleteGoOrderCommentId(String goId, String orderId, String commentId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_ORDER_COMMENTS_IDS_PREFFIX.getKey() + orderId;
+		cacheClient.zrem(key, commentId);
+
+		key = RedisDataKey.KEY_GO_COMMENTS_IDS_PREFFIX.getKey() + goId;
+		cacheClient.zrem(key, commentId);
 	}
 
 	/**
