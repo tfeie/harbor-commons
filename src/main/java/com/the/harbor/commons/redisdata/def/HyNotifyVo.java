@@ -1,6 +1,7 @@
 package com.the.harbor.commons.redisdata.def;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class HyNotifyVo implements Serializable {
 
@@ -25,6 +26,8 @@ public class HyNotifyVo implements Serializable {
 	private String status;
 
 	private String link;
+
+	private Timestamp createDate;
 
 	// 发送者类型名称
 	private String senderTypeName;
@@ -208,6 +211,14 @@ public class HyNotifyVo implements Serializable {
 
 	public void setTimeInterval(String timeInterval) {
 		this.timeInterval = timeInterval;
+	}
+
+	public Timestamp getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Timestamp createDate) {
+		this.createDate = createDate;
 	}
 
 }
