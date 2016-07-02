@@ -111,6 +111,40 @@ public final class HyGoUtil {
 	}
 
 	/**
+	 * 记录GO ORDER发表的评论ID。<br>
+	 * 采用redis的有序SortSet按照Score为时间戳排序
+	 * 
+	 * @param goId
+	 * @param commentId
+	 */
+	public static void recordGoOrderCommentId(String orderId, String commentId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_ORDER_COMMENTS_IDS_PREFFIX.getKey() + orderId;
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), commentId);
+	}
+
+	public static Set<String> getGoOrderCommentIds(String orderId, long start, long end) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_ORDER_COMMENTS_IDS_PREFFIX.getKey() + orderId;
+		return cacheClient.zrange(key, start, end);
+	}
+
+	/**
+	 * 记录活动与订单的评论信息
+	 * @param goId
+	 * @param orderId
+	 * @param commentId
+	 */
+	public static void recordGoOrderCommentId(String goId, String orderId, String commentId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_ORDER_COMMENTS_IDS_PREFFIX.getKey() + orderId;
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), commentId);
+
+		key = RedisDataKey.KEY_GO_COMMENTS_IDS_PREFFIX.getKey() + goId;
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), commentId);
+	}
+
+	/**
 	 * 记录一条GO评论内容
 	 * 
 	 * @param commentId

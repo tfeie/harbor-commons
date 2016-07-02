@@ -32,7 +32,9 @@ public enum RedisDataKey {
 
 	KEY_BE_COMMENTS_CONTENT_PREFFIX("harbor.be.comments.commentid.", "BE评论内容KEY前缀，后面加上commentId。值为对应的评论内容BeComment"),
 
-	KEY_GO_COMMENTS_IDS_PREFFIX("harbor.go.comments.goid.", "GO评论缓存KEY前缀，后面加上BEID。值为所有评论数据ID"),
+	KEY_GO_COMMENTS_IDS_PREFFIX("harbor.go.comments.goid.", "GO评论缓存KEY前缀，后面加上GOID。值为所有评论数据ID"),
+	
+	KEY_GO_ORDER_COMMENTS_IDS_PREFFIX("harbor.go.order.comments.orderid.", "针对单个预约订单的评论缓存KEY前缀，后面加上ORDERID。值为所有评论数据ID"),
 
 	KEY_GO_COMMENTS_CONTENT_PREFFIX("harbor.go.comments.commentid.", "GO评论内容KEY前缀，后面加上commentId。值为对应的评论内容GoComment"),
 
