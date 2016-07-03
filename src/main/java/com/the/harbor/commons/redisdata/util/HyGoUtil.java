@@ -226,7 +226,7 @@ public final class HyGoUtil {
 	 * @param goId
 	 * @param userId
 	 */
-	public static void agreeUserJoinGroup(String goId, String userId) {
+	public static void agreeUserJoinGroupApply(String goId, String userId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
 		// 首先将用户从待确认列表删除
@@ -242,7 +242,7 @@ public final class HyGoUtil {
 	 * @param goId
 	 * @param userId
 	 */
-	public static void rejectUserJoinGroup(String goId, String userId) {
+	public static void rejectUserJoinGroupApply(String goId, String userId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
 		// 首先将用户从待确认列表删除
@@ -259,6 +259,31 @@ public final class HyGoUtil {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_JOIN_CONFIRMED_USER_PREFFIX.getKey() + goId;
 		return cacheClient.zrange(key, 0, -1).size();
+	}
+
+	/**
+	 * 判断用户是否已经参加了此活动
+	 * 
+	 * @param goId
+	 * @param userId
+	 */
+	public static boolean checkUserHadJointGroup(String goId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_CONFIRMED_USER_PREFFIX.getKey() + goId;
+		return cacheClient.zrange(key, 0, -1).contains(userId);
+	}
+
+	/**
+	 * 判断用户是否申请了此活动
+	 * 
+	 * @param goId
+	 * @param userId
+	 * @return
+	 */
+	public static boolean checkUserHadAppliedGroup(String goId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
+		return cacheClient.zrange(key, 0, -1).contains(userId);
 	}
 
 }
