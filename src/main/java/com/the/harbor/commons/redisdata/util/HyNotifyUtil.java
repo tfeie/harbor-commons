@@ -37,7 +37,7 @@ public class HyNotifyUtil {
 	}
 
 	/**
-	 * 获取用户所有的未读消息<br>
+	 * 获取用户所有的未读消息，按照时间排序<br>
 	 * 
 	 * @param beId
 	 * @param start
@@ -49,7 +49,7 @@ public class HyNotifyUtil {
 	public static Set<String> getUserNotifyIds(String userId, long start, long end) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_NOTIFY_USER_UNREAD_IDS_PREFFIX.getKey() + userId;
-		return cacheClient.zrange(key, start, end);
+		return cacheClient.zrevrange(key, start, end);
 	}
 
 	/**
