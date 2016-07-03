@@ -12,7 +12,7 @@ public class HyGoCommentTest {
 		Set<String> set = HyGoUtil.getGoCommentIds(goId, 0, -1);
 		for (String commentId : set) {
 			HyGoUtil.deleteGoComment(commentId);
-			HyGoUtil.deleteGoCommentId(goId, commentId);
+			HyGoUtil.deleteGoOrderCommentId(goId,"3F1324014B5A4E3D9DEB0680E19AB1CB", commentId);
 		}
 
 	}

@@ -22,7 +22,8 @@ public enum RedisDataKey {
 
 	KEY_BE_TAGS("harbor.be.tags", "BE系统标签"),
 
-	KEY_NOTIFY_USER_UNREAD_IDS_PREFFIX("harbor.notify.user.unread.userid.", "记录发送给单个用户的未读消息通知，值为消息notifyId的列表。为sortset类型"),
+	KEY_NOTIFY_USER_UNREAD_IDS_PREFFIX("harbor.notify.user.unread.userid.",
+			"记录发送给单个用户的未读消息通知，值为消息notifyId的列表。为sortset类型"),
 
 	KEY_NOTIFY_CONTENT_PREFIX("harbor.notify.content.", "记录消息的内容，key为notifyId,值为xx序列化的值"),
 
@@ -33,7 +34,7 @@ public enum RedisDataKey {
 	KEY_BE_COMMENTS_CONTENT_PREFFIX("harbor.be.comments.commentid.", "BE评论内容KEY前缀，后面加上commentId。值为对应的评论内容BeComment"),
 
 	KEY_GO_COMMENTS_IDS_PREFFIX("harbor.go.comments.goid.", "GO评论缓存KEY前缀，后面加上GOID。值为所有评论数据ID"),
-	
+
 	KEY_GO_ORDER_COMMENTS_IDS_PREFFIX("harbor.go.order.comments.orderid.", "针对单个预约订单的评论缓存KEY前缀，后面加上ORDERID。值为所有评论数据ID"),
 
 	KEY_GO_COMMENTS_CONTENT_PREFFIX("harbor.go.comments.commentid.", "GO评论内容KEY前缀，后面加上commentId。值为对应的评论内容GoComment"),
@@ -41,6 +42,10 @@ public enum RedisDataKey {
 	KEY_GO_VIEW_PREFFIX("harbor.go.view.goid.", "GO被查看的数据缓存KEY前缀，后面加上GOID。值为用户列表"),
 
 	KEY_GO_FAVORITE_PREFFIX("harbor.go.favorite.goid.", "GO被搜藏的数据缓存KEY前缀，后面加上GOID。值为用户列表"),
+
+	KEY_GO_JOIN_CONFIRMED_USER_PREFFIX("harbor.go.join.confirmed.user.goid.", "GROUP活动审核通过的参加用户列表。值为用户列表"),
+
+	KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX("harbor.go.join.waitconfirm.user.goid.", "GROUP活动等待审核的参加用户列表。值为用户列表"),
 
 	KEY_USER_INFO_PREFFIX("harbor.user.userid.", "存储用户资料的KEY前缀，后面加上USERID，值为UserViwInfo的序列化对象"),
 

@@ -147,6 +147,7 @@ public final class HyGoUtil {
 
 	/**
 	 * 删除活动订单的评论数据
+	 * 
 	 * @param goId
 	 * @param orderId
 	 * @param commentId
@@ -193,6 +194,71 @@ public final class HyGoUtil {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_COMMENTS_CONTENT_PREFFIX.getKey() + commentId;
 		cacheClient.del(key);
+	}
+
+	/**
+	 * 用户申请参加GROUP活动
+	 * 
+	 * @param goId
+	 * @param userId
+	 */
+	public static void userApplyJoinGroup(String goId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), userId);
+	}
+
+	/**
+	 * 获取GROUP活动中等待审核的用户集合
+	 * 
+	 * @param goId
+	 * @return
+	 */
+	public static Set<String> getGroupWaitConfirmUsers(String goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
+		return cacheClient.zrevrange(key, 0, -1);
+	}
+
+	/**
+	 * 同意用户参加GROUP活动
+	 * 
+	 * @param goId
+	 * @param userId
+	 */
+	public static void agreeUserJoinGroup(String goId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
+		// 首先将用户从待确认列表删除
+		cacheClient.zrem(key, userId);
+		// 其次将用户加入到已经确认列表
+		String key2 = RedisDataKey.KEY_GO_JOIN_CONFIRMED_USER_PREFFIX.getKey() + goId;
+		cacheClient.zadd(key2, DateUtil.getCurrentTimeMillis(), userId);
+	}
+
+	/**
+	 * 拒绝用户参加GROUP活动
+	 * 
+	 * @param goId
+	 * @param userId
+	 */
+	public static void rejectUserJoinGroup(String goId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
+		// 首先将用户从待确认列表删除
+		cacheClient.zrem(key, userId);
+	}
+
+	/**
+	 * 获取GROUP活动确认参加的用户总数
+	 * 
+	 * @param goId
+	 * @return
+	 */
+	public static int getGroupConfirmedJoinUsersCount(String goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_CONFIRMED_USER_PREFFIX.getKey() + goId;
+		return cacheClient.zrange(key, 0, -1).size();
 	}
 
 }
