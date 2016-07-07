@@ -219,6 +219,12 @@ public final class HyGoUtil {
 		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
 		return cacheClient.zrevrange(key, 0, -1);
 	}
+	
+	public static Set<String> getGroupConfirmedUsers(String goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_CONFIRMED_USER_PREFFIX.getKey() + goId;
+		return cacheClient.zrevrange(key, 0, -1);
+	}
 
 	/**
 	 * 同意用户参加GROUP活动
