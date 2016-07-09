@@ -29,6 +29,8 @@ public enum RedisDataKey {
 
 	KEY_BE_LIKES_PREFFIX("harbor.be.likes.beid.", "BE点赞数据缓存KEY前缀，后面加上BEID。值为用户列表"),
 
+	KEY_BE_HAIBEI_REWARDUSER_PREFFIX("harbor.be.haibei.rewarduser.beid.", "BE打赏的用户缓存KEY前缀，后面加上BEID。值为用户列表"),
+
 	KEY_BE_COMMENTS_IDS_PREFFIX("harbor.be.comments.beid.", "BE评论缓存KEY前缀，后面加上BEID。值为所有评论数据ID"),
 
 	KEY_BE_COMMENTS_CONTENT_PREFFIX("harbor.be.comments.commentid.", "BE评论内容KEY前缀，后面加上commentId。值为对应的评论内容BeComment"),
@@ -56,7 +58,7 @@ public enum RedisDataKey {
 	KEY_USER_FRIEND_APPLY_PREFFIX("harbor.user.friend.apply.userid.", "记录正在申请成为这个用户好友的信息。值为用户列表"),
 
 	KEY_USER_FRIEND_BECOME_PREFFIX("harbor.user.friend.become.userid.", "记录这个用户的正式好友。值为用户列表"),
-	
+
 	KEY_WEIXIN_REG_USER("harbor.weixin.register.user", "记录所有微信已经注册成用户的信息,二级key为openId,值为userId"),
 
 	KEY_WEIXIN_COMMON_TOKEN("harbor.weixin.common.token", "微信公众号基础token存储,一般2小时候失效"),
