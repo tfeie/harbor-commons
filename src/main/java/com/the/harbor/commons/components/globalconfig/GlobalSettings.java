@@ -4,12 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSONArray;
 import com.the.harbor.commons.exception.SDKException;
 import com.the.harbor.commons.util.StringUtil;
 
@@ -365,20 +363,6 @@ public final class GlobalSettings {
 			throw new SDKException("can not get harbor.oss.images.bucketname from the file: " + SETTINGS_FILE_NAME);
 		}
 		return name;
-	}
-
-	/**
-	 * 预设的会员购买服务价格
-	 * 
-	 * @return
-	 */
-	public static List<MemeberPrice> getMemeberPrices() {
-		String conf = properties.getProperty("harbor.provide.member.price");
-		if (StringUtil.isBlank(conf)) {
-			throw new SDKException("can not get harbor.provide.member.price from the file: " + SETTINGS_FILE_NAME);
-		}
-		List<MemeberPrice> list = JSONArray.parseArray(conf, MemeberPrice.class);
-		return list;
 	}
 
 	/**
