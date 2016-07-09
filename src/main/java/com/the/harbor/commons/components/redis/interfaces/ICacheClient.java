@@ -907,4 +907,12 @@ public interface ICacheClient {
 	 * @return
 	 */
 	boolean sismember(final String key, final String member);
+
+	/**
+	 * 获取满足条件的KEY
+	 * 
+	 * @param pattern
+	 * @return
+	 */
+	Set<String> keys(String pattern);
 }

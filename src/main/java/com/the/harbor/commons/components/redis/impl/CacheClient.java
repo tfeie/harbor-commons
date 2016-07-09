@@ -2340,4 +2340,27 @@ public class CacheClient implements ICacheClient {
 				returnResource(jedis);
 		}
 	}
+
+	@Override
+	public Set<String> keys(String pattern) {
+		Jedis jedis = null;
+		try {
+			jedis = getJedis();
+			return jedis.keys(pattern);
+		} catch (JedisConnectionException jedisConnectionException) {
+			createPool();
+			if (canConnection()) {
+				return keys(pattern);
+			} else {
+				log.error(jedisConnectionException.getMessage(), jedisConnectionException);
+				throw new SDKException(jedisConnectionException);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new SDKException(e);
+		} finally {
+			if (jedis != null)
+				returnResource(jedis);
+		}
+	}
 }

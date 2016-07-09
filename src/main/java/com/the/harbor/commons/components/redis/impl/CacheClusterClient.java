@@ -1802,4 +1802,9 @@ public class CacheClusterClient implements ICacheClient {
 		} finally {
 		}
 	}
+
+	@Override
+	public Set<String> keys(String pattern) {
+		return new HashSet<String>();
+	}
 }
