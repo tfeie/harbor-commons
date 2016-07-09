@@ -249,6 +249,20 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * 用户资产交易队列
+	 * 
+	 * @return
+	 */
+	public static final String getUserAssetsTradeQueueName() {
+		String queue = properties.getProperty("harbor.mns.userassets.trade.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException(
+					"can not get harbor.mns.userassets.trade.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 获取短信发送数据记录处理队列
 	 * 
 	 * @return
