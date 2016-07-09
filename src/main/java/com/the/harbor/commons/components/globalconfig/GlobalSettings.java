@@ -287,6 +287,34 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * be索引实时统计数据更新
+	 * 
+	 * @return
+	 */
+	public static final String getBeIndexRealtimeCountQueueName() {
+		String queue = properties.getProperty("harbor.mns.be.realtimecount.indexupdate.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException(
+					"can not get harbor.mns.be.realtimecount.indexupdate.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * go索引实时统计数据更新
+	 * 
+	 * @return
+	 */
+	public static final String getGoIndexRealtimeCountQueueName() {
+		String queue = properties.getProperty("harbor.mns.go.realtimecount.indexupdate.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException(
+					"can not get harbor.mns.go.realtimecount.indexupdate.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * GO索引异步构建队列
 	 * 
 	 * @return
