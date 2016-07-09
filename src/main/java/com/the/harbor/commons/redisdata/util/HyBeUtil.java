@@ -71,6 +71,42 @@ public final class HyBeUtil {
 	}
 
 	/**
+	 * 用户打赏海贝记录
+	 * 
+	 * @param beId
+	 * @param userId
+	 */
+	public static void userRewardBe(String beId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_HAIBEI_REWARDUSER_PREFFIX.getKey() + beId;
+		cacheClient.sadd(key, userId);
+	}
+
+	/**
+	 * 获取打赏用户列表
+	 * 
+	 * @param beId
+	 * @return
+	 */
+	public static Set<String> getBeRewardUsers(String beId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_HAIBEI_REWARDUSER_PREFFIX.getKey() + beId;
+		return cacheClient.smembers(key);
+	}
+
+	/**
+	 * 获取打算用户数量
+	 * 
+	 * @param beId
+	 * @return
+	 */
+	public static long getRewardUserCount(String beId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_HAIBEI_REWARDUSER_PREFFIX.getKey() + beId;
+		return cacheClient.scard(key);
+	}
+
+	/**
 	 * 记录BE发表的评论ID。<br>
 	 * 采用redis的有序SortSet按照Score为时间戳排序
 	 * 
