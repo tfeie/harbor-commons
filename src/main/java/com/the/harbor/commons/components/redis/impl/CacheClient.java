@@ -45,6 +45,7 @@ public class CacheClient implements ICacheClient {
 		isRedisNeedAuth = true;
 		createPool();
 	}
+	
 
 	private synchronized void createPool() {
 		if (!canConnection()) {
