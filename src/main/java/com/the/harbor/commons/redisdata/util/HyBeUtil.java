@@ -75,6 +75,19 @@ public final class HyBeUtil {
 	}
 
 	/**
+	 * 判断用户是否已经收藏了此BE
+	 * 
+	 * @param goId
+	 * @param userId
+	 * @return
+	 */
+	public static boolean checkUserBeFavorite(String beId, String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_FAVORITE_PREFFIX.getKey() + beId;
+		return cacheClient.sismember(key, userId);
+	}
+
+	/**
 	 * 获取BE的点赞总数
 	 * 
 	 * @param beId
