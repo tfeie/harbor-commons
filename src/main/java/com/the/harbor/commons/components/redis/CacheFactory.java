@@ -1,8 +1,6 @@
 package com.the.harbor.commons.components.redis;
 
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -13,7 +11,7 @@ import com.the.harbor.commons.util.StringUtil;
 
 public final class CacheFactory {
 
-	private static Map<String, ICacheClient> cacheClients = new ConcurrentHashMap<String, ICacheClient>();
+	private static ICacheClient cacheClient;
 
 	private CacheFactory() {
 	}
@@ -26,6 +24,7 @@ public final class CacheFactory {
 		genericObjectPoolConfig.setTestOnBorrow(Boolean.parseBoolean(config.getProperty("redis.testOnBorrow", "true")));
 		genericObjectPoolConfig
 				.setTestOnReturn(Boolean.parseBoolean(config.getProperty("redis.testOnReturn", "false")));
+		genericObjectPoolConfig.setLifo(true);
 		String host = config.getProperty("redis.host", "127.0.0.1:16379");
 		String password = config.getProperty("redis.password");
 		String[] hostArray = host.split(";");
@@ -40,12 +39,18 @@ public final class CacheFactory {
 			}
 
 		}
-		cacheClients.put(host, cacheClient);
 		return cacheClient;
 	}
 
 	public static ICacheClient getClient() {
-		Properties config = RedisSettings.getProperties();
-		return getClient(config);
+		if (cacheClient == null) {
+			synchronized (CacheFactory.class) {
+				if (cacheClient == null) {
+					Properties config = RedisSettings.getProperties();
+					cacheClient = getClient(config);
+				}
+			}
+		}
+		return cacheClient;
 	}
 }

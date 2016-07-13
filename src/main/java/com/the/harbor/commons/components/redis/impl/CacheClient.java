@@ -49,7 +49,7 @@ public class CacheClient implements ICacheClient {
 
 	private synchronized void createPool() {
 		if (!canConnection()) {
-			log.info("Create JedisPool Begin ...");
+			log.debug("Create JedisPool Begin ...");
 			try {
 				String[] hostArr = host.split(":");
 				if (config.getMaxWaitMillis() < 15000)
