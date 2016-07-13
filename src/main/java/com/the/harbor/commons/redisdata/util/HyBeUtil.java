@@ -10,6 +10,71 @@ import com.the.harbor.commons.util.DateUtil;
 public final class HyBeUtil {
 
 	/**
+	 * 用户收藏BE
+	 * 
+	 * @param userId
+	 * @param beId
+	 */
+	public static void userFavorBe(String userId, String beId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
+		cacheClient.sadd(key, beId);
+
+		String key2 = RedisDataKey.KEY_BE_FAVORITE_PREFFIX.getKey() + beId;
+		cacheClient.sadd(key2, userId);
+	}
+
+	/**
+	 * 用户取消收藏BE
+	 * 
+	 * @param userId
+	 * @param beId
+	 */
+	public static void userCancelFavorBe(String userId, String beId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
+		cacheClient.srem(key, beId);
+		String key2 = RedisDataKey.KEY_BE_FAVORITE_PREFFIX.getKey() + beId;
+		cacheClient.srem(key2, userId);
+	}
+
+	/**
+	 * 获取用户收藏的BE数量
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public static Set<String> getUserFavorBes(String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
+		return cacheClient.smembers(key);
+	}
+
+	/**
+	 * 获取用户收藏的BE总数
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public static long getUserFavorBesCount(String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
+		return cacheClient.scard(key);
+	}
+
+	/**
+	 * 获取BE被收藏的用户总数
+	 * 
+	 * @param beId
+	 * @return
+	 */
+	public static long getBeFavoredUserCount(String beId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_FAVORITE_PREFFIX.getKey() + beId;
+		return cacheClient.scard(key);
+	}
+
+	/**
 	 * 获取BE的点赞总数
 	 * 
 	 * @param beId

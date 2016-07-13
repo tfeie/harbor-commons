@@ -10,12 +10,64 @@ import com.the.harbor.commons.util.DateUtil;
 public final class HyGoUtil {
 
 	/**
+	 * 用户收藏GO
+	 * 
+	 * @param userId
+	 * @param goId
+	 */
+	public static void userFavorGo(String userId, String goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
+		cacheClient.sadd(key, goId);
+		String key2 = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
+		cacheClient.sadd(key2, userId);
+	}
+
+	/**
+	 * 用户取消收藏GO
+	 * 
+	 * @param userId
+	 * @param goId
+	 */
+	public static void userCancelFavorGo(String userId, String goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
+		cacheClient.srem(key, goId);
+		String key2 = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
+		cacheClient.srem(key2, userId);
+	}
+
+	/**
+	 * 获取用户收藏的GO数量
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public static Set<String> getUserFavorGoes(String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
+		return cacheClient.smembers(key);
+	}
+
+	/**
+	 * 获取用户收藏的GO总数
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public static long getUserFavorGoesCount(String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
+		return cacheClient.scard(key);
+	}
+
+	/**
 	 * 获取活动被多少用户收藏
 	 * 
 	 * @param goId
 	 * @return
 	 */
-	public static long getGoFavoriteCount(String goId) {
+	public static long getGoFavoredUserCount(String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
 		return cacheClient.scard(key);
@@ -32,30 +84,6 @@ public final class HyGoUtil {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
 		return cacheClient.sismember(key, userId);
-	}
-
-	/**
-	 * 记录用户收藏活动
-	 * 
-	 * @param goId
-	 * @param userId
-	 */
-	public static void recordUserFavorite(String goId, String userId) {
-		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
-		cacheClient.sadd(key, userId);
-	}
-
-	/**
-	 * 用户取消收藏活动
-	 * 
-	 * @param goId
-	 * @param userId
-	 */
-	public static void userCancelFavorite(String goId, String userId) {
-		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
-		cacheClient.srem(key, userId);
 	}
 
 	/**
@@ -219,7 +247,7 @@ public final class HyGoUtil {
 		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
 		return cacheClient.zrevrange(key, 0, -1);
 	}
-	
+
 	public static Set<String> getGroupConfirmedUsers(String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_JOIN_CONFIRMED_USER_PREFFIX.getKey() + goId;
