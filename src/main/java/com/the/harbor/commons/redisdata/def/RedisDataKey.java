@@ -61,7 +61,9 @@ public enum RedisDataKey {
 
 	KEY_USER_FRIEND_BECOME_PREFFIX("harbor.user.friend.become.userid.", "记录这个用户的正式好友。值为用户列表"),
 
-	KEY_USER_FAVOR_GO_PREFFIX("harbor.user.favorgo.userid.", "用户收藏的GO列表。key加上userId,值为goId"),
+	KEY_USER_FAVOR_GO_ONO_PREFFIX("harbor.user.favorgo.ono.userid.", "用户收藏的GO列表。key加上userId,值为goId"),
+	
+	KEY_USER_FAVOR_GO_GROUP_PREFFIX("harbor.user.favorgo.group.userid.", "用户收藏的GO列表。key加上userId,值为goId"),
 
 	KEY_USER_FAVOR_BE_PREFFIX("harbor.user.favorbe.userid.", "用户收藏的GO列表。key加上userId,值为beId"),
 

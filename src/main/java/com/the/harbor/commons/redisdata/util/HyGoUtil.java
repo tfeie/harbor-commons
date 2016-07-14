@@ -1,7 +1,9 @@
 package com.the.harbor.commons.redisdata.util;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import com.the.harbor.base.enumeration.hygo.GoType;
 import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.components.redis.interfaces.ICacheClient;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
@@ -18,16 +20,26 @@ public final class HyGoUtil {
 	 * @param asc
 	 * @return
 	 */
-	public static Set<String> getUserFavorGoesPage(String userId, int pageNo, int pageSize, boolean asc) {
+	public static Set<String> getUserFavorGoesPage(String userId, String goType, int pageNo, int pageSize,
+			boolean asc) {
 		int start = (pageNo - 1) * pageSize;
 		int end = pageNo * pageSize - 1;
 		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		if (asc) {
-			return cacheClient.zrange(key, start, end);
-		} else {
-			return cacheClient.zrevrange(key, start, end);
+		String key = null;
+		if (GoType.GROUP.getValue().equals(goType)) {
+			key = RedisDataKey.KEY_USER_FAVOR_GO_GROUP_PREFFIX.getKey() + userId;
+		} else if (GoType.ONE_ON_ONE.getValue().equals(goType)) {
+			key = RedisDataKey.KEY_USER_FAVOR_GO_ONO_PREFFIX.getKey() + userId;
 		}
+		if (key != null) {
+			if (asc) {
+				return cacheClient.zrange(key, start, end);
+			} else {
+				return cacheClient.zrevrange(key, start, end);
+			}
+		}
+		return new HashSet<String>();
+
 	}
 
 	/**
@@ -36,10 +48,15 @@ public final class HyGoUtil {
 	 * @param userId
 	 * @param goId
 	 */
-	public static void userFavorGo(String userId, String goId) {
+	public static void userFavorGo(String userId, String goType, String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), goId);
+		if (GoType.GROUP.getValue().equals(goType)) {
+			String key = RedisDataKey.KEY_USER_FAVOR_GO_GROUP_PREFFIX.getKey() + userId;
+			cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), goId);
+		} else if (GoType.ONE_ON_ONE.getValue().equals(goType)) {
+			String key = RedisDataKey.KEY_USER_FAVOR_GO_ONO_PREFFIX.getKey() + userId;
+			cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), goId);
+		}
 		String key2 = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
 		cacheClient.sadd(key2, userId);
 	}
@@ -50,25 +67,19 @@ public final class HyGoUtil {
 	 * @param userId
 	 * @param goId
 	 */
-	public static void userCancelFavorGo(String userId, String goId) {
+	public static void userCancelFavorGo(String userId, String goType, String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		cacheClient.zrem(key, goId);
+		if (GoType.GROUP.getValue().equals(goType)) {
+			String key = RedisDataKey.KEY_USER_FAVOR_GO_GROUP_PREFFIX.getKey() + userId;
+			cacheClient.zrem(key, goId);
+		} else if (GoType.ONE_ON_ONE.getValue().equals(goType)) {
+			String key = RedisDataKey.KEY_USER_FAVOR_GO_ONO_PREFFIX.getKey() + userId;
+			cacheClient.zrem(key, goId);
+		}
 		String key2 = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
 		cacheClient.srem(key2, userId);
 	}
 
-	/**
-	 * 获取用户收藏的GO数量
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public static Set<String> getUserFavorGoes(String userId) {
-		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		return cacheClient.zrange(key, 0, -1);
-	}
 
 	/**
 	 * 获取用户收藏的GO总数
@@ -76,10 +87,16 @@ public final class HyGoUtil {
 	 * @param userId
 	 * @return
 	 */
-	public static long getUserFavorGoesCount(String userId) {
+	public static long getUserFavorGoesCount(String userId,String goType) {
 		ICacheClient cacheClient = CacheFactory.getClient();
-		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		return cacheClient.zcount(key, 0, -1);
+		if (GoType.GROUP.getValue().equals(goType)) {
+			String key = RedisDataKey.KEY_USER_FAVOR_GO_GROUP_PREFFIX.getKey() + userId;
+			return cacheClient.zcount(key, 0, -1);
+		} else if (GoType.ONE_ON_ONE.getValue().equals(goType)) {
+			String key = RedisDataKey.KEY_USER_FAVOR_GO_ONO_PREFFIX.getKey() + userId;
+			return cacheClient.zcount(key, 0, -1);
+		}
+		return 0;
 	}
 
 	/**
