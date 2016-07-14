@@ -13,6 +13,7 @@ import com.the.harbor.commons.exception.SDKException;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.SortingParams;
 import redis.clients.jedis.exceptions.JedisClusterException;
 import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
@@ -1806,5 +1807,23 @@ public class CacheClusterClient implements ICacheClient {
 	@Override
 	public Set<String> keys(String pattern) {
 		return new HashSet<String>();
+	}
+
+	@Override
+	public List<String> sort(String key, SortingParams sortingParameters) {
+		try {
+			return jc.sort(key, sortingParameters);
+		} catch (JedisClusterException jcException) {
+			getCluster();
+			if (canConnection()) {
+				return sort(key, sortingParameters);
+			}
+			log.error(jcException.getMessage(), jcException);
+			throw new SDKException(jcException);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new SDKException(e);
+		} finally {
+		}
 	}
 }

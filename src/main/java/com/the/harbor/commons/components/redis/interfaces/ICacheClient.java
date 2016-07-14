@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import redis.clients.jedis.SortingParams;
 import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
 
@@ -915,4 +916,13 @@ public interface ICacheClient {
 	 * @return
 	 */
 	Set<String> keys(String pattern);
+
+	/**
+	 * 对key进行排序
+	 * 
+	 * @param key
+	 * @param sortingParameters
+	 * @return
+	 */
+	List<String> sort(String key, SortingParams sortingParameters);
 }

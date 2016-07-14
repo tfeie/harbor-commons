@@ -14,6 +14,7 @@ import com.the.harbor.commons.exception.SDKException;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisSentinelPool;
+import redis.clients.jedis.SortingParams;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
@@ -2333,6 +2334,29 @@ public class CacheSentinelClient implements ICacheClient {
 			createPool();
 			if (canConnection()) {
 				return keys(pattern);
+			} else {
+				log.error(jedisConnectionException.getMessage(), jedisConnectionException);
+				throw new SDKException(jedisConnectionException);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new SDKException(e);
+		} finally {
+			if (jedis != null)
+				returnResource(jedis);
+		}
+	}
+
+	@Override
+	public List<String> sort(String key, SortingParams sortingParameters) {
+		Jedis jedis = null;
+		try {
+			jedis = getJedis();
+			return jedis.sort(key, sortingParameters);
+		} catch (JedisConnectionException jedisConnectionException) {
+			createPool();
+			if (canConnection()) {
+				return sort(key, sortingParameters);
 			} else {
 				log.error(jedisConnectionException.getMessage(), jedisConnectionException);
 				throw new SDKException(jedisConnectionException);

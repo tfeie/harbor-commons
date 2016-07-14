@@ -10,6 +10,27 @@ import com.the.harbor.commons.util.DateUtil;
 public final class HyBeUtil {
 
 	/**
+	 * 获取用户收藏的BE分页信息
+	 * 
+	 * @param userId
+	 * @param pageNo
+	 * @param pageSize
+	 * @param asc
+	 * @return
+	 */
+	public static Set<String> getUserFavorBesPage(String userId, int pageNo, int pageSize, boolean asc) {
+		int start = (pageNo - 1) * pageSize;
+		int end = pageNo * pageSize - 1;
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
+		if (asc) {
+			return cacheClient.zrange(key, start, end);
+		} else {
+			return cacheClient.zrevrange(key, start, end);
+		}
+	}
+
+	/**
 	 * 用户收藏BE
 	 * 
 	 * @param userId
@@ -18,7 +39,7 @@ public final class HyBeUtil {
 	public static void userFavorBe(String userId, String beId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
-		cacheClient.sadd(key, beId);
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), beId);
 
 		String key2 = RedisDataKey.KEY_BE_FAVORITE_PREFFIX.getKey() + beId;
 		cacheClient.sadd(key2, userId);
@@ -33,7 +54,7 @@ public final class HyBeUtil {
 	public static void userCancelFavorBe(String userId, String beId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
-		cacheClient.srem(key, beId);
+		cacheClient.zrem(key, beId);
 		String key2 = RedisDataKey.KEY_BE_FAVORITE_PREFFIX.getKey() + beId;
 		cacheClient.srem(key2, userId);
 	}
@@ -47,7 +68,7 @@ public final class HyBeUtil {
 	public static Set<String> getUserFavorBes(String userId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
-		return cacheClient.smembers(key);
+		return cacheClient.zrange(key, 0, -1);
 	}
 
 	/**
@@ -59,7 +80,7 @@ public final class HyBeUtil {
 	public static long getUserFavorBesCount(String userId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_BE_PREFFIX.getKey() + userId;
-		return cacheClient.scard(key);
+		return cacheClient.zcount(key, 0, -1);
 	}
 
 	/**

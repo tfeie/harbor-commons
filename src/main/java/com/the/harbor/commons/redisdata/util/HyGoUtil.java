@@ -10,6 +10,27 @@ import com.the.harbor.commons.util.DateUtil;
 public final class HyGoUtil {
 
 	/**
+	 * 获取用户收藏的GO分页信息
+	 * 
+	 * @param userId
+	 * @param pageNo
+	 * @param pageSize
+	 * @param asc
+	 * @return
+	 */
+	public static Set<String> getUserFavorGoesPage(String userId, int pageNo, int pageSize, boolean asc) {
+		int start = (pageNo - 1) * pageSize;
+		int end = pageNo * pageSize - 1;
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
+		if (asc) {
+			return cacheClient.zrange(key, start, end);
+		} else {
+			return cacheClient.zrevrange(key, start, end);
+		}
+	}
+
+	/**
 	 * 用户收藏GO
 	 * 
 	 * @param userId
@@ -18,7 +39,7 @@ public final class HyGoUtil {
 	public static void userFavorGo(String userId, String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		cacheClient.sadd(key, goId);
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), goId);
 		String key2 = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
 		cacheClient.sadd(key2, userId);
 	}
@@ -32,7 +53,7 @@ public final class HyGoUtil {
 	public static void userCancelFavorGo(String userId, String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		cacheClient.srem(key, goId);
+		cacheClient.zrem(key, goId);
 		String key2 = RedisDataKey.KEY_GO_FAVORITE_PREFFIX.getKey() + goId;
 		cacheClient.srem(key2, userId);
 	}
@@ -46,7 +67,7 @@ public final class HyGoUtil {
 	public static Set<String> getUserFavorGoes(String userId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		return cacheClient.smembers(key);
+		return cacheClient.zrange(key, 0, -1);
 	}
 
 	/**
@@ -58,7 +79,7 @@ public final class HyGoUtil {
 	public static long getUserFavorGoesCount(String userId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_USER_FAVOR_GO_PREFFIX.getKey() + userId;
-		return cacheClient.scard(key);
+		return cacheClient.zcount(key, 0, -1);
 	}
 
 	/**
