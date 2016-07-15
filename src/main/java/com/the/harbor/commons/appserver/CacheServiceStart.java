@@ -12,7 +12,7 @@ public final class CacheServiceStart {
 
     private static final Logger LOG = LoggerFactory.getLogger(CacheServiceStart.class);
 
-    private static final String PATH = "classpath:context/s-context.xml";
+    private static final String PATH = "classpath:context/core-context.xml";
     private CacheServiceStart(){}
     public static void main(String[] args) {
         LOG.error("开始刷新缓存......");
