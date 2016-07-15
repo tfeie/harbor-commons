@@ -234,6 +234,72 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * 点赞消息处理队列
+	 * 
+	 * @return
+	 */
+	public static final String getDianzanQueueName() {
+		String queue = properties.getProperty("harbor.mns.dianzan.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.dianzan.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * 评论
+	 * 
+	 * @return
+	 */
+	public static final String getCommentQueueName() {
+		String queue = properties.getProperty("harbor.mns.comment.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.comment.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * 收藏
+	 * 
+	 * @return
+	 */
+	public static final String getFavorQueueName() {
+		String queue = properties.getProperty("harbor.mns.favor.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.favor.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * 浏览
+	 * 
+	 * @return
+	 */
+	public static final String getViewQueueName() {
+		String queue = properties.getProperty("harbor.mns.view.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.view.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * GROUP活动报名确认
+	 * 
+	 * @return
+	 */
+	public static final String getGroupJoinConfirmQueueName() {
+		String queue = properties.getProperty("harbor.mns.groupjoinconfirm.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException(
+					"can not get harbor.mns.groupjoinconfirm.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 站内系统通知消息处理队列
 	 * 
 	 * @return
