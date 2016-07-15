@@ -19,5 +19,14 @@ public final class MQListenerStart {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] { PATH });
 		context.start();
 		LOG.error("监听启动成功.....");
+		synchronized (MQListenerStart.class) {
+			while (true) {
+				try {
+					MQListenerStart.class.wait();
+				} catch (Exception e) {
+					LOG.error("MQ监听启动失败具体信息为：" + e.getMessage(), e);
+				}
+			}
+		}
 	}
 }
