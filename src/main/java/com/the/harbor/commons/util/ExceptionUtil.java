@@ -59,9 +59,11 @@ public final class ExceptionUtil {
 	public static final <T> ResponseData<T> convert(Exception ex, Class<T> clazz) {
 		ResponseData<T> responseData = null;
 		if (ex instanceof BusinessException) {
-			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE, ex.getMessage());
+			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE,
+					((BusinessException) ex).getErrorCode(), ex.getMessage());
 		} else if (ex instanceof SDKException) {
-			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE, ex.getMessage());
+			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE, ExceptCodeConstants.SYSTEM_ERROR,
+					ex.getMessage());
 		} else {
 			String error = null;
 			if (ex.getCause() instanceof ConstraintViolationException) {
@@ -74,7 +76,7 @@ public final class ExceptionUtil {
 					}
 				}
 			}
-			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE,
+			responseData = new ResponseData<T>(ResponseData.AJAX_STATUS_FAILURE, ExceptCodeConstants.VALID_ERROR,
 					StringUtil.isBlank(error) ? "系统繁忙，请重试" : error);
 		}
 		return responseData;

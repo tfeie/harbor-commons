@@ -6,51 +6,65 @@ import com.the.harbor.base.vo.Response;
 
 public class ResponseData<T> extends Response implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public static final String AJAX_STATUS_SUCCESS = "1";
+	public static final String AJAX_STATUS_SUCCESS = "1";
 
-    public static final String AJAX_STATUS_FAILURE = "0";
+	public static final String AJAX_STATUS_FAILURE = "0";
 
-    private String statusCode;
+	private String statusCode;
 
-    private String statusInfo;
+	private String statusInfo;
 
-    private T data;
+	private String busiCode;
 
-    public ResponseData(String statusCode, String statusInfo) {
-        this.statusCode = statusCode;
-        this.statusInfo = statusInfo;
-    }
+	private T data;
 
-    public ResponseData(String statusCode, String statusInfo, T data) {
-        this.statusCode = statusCode;
-        this.statusInfo = statusInfo;
-        this.data = data;
-    }
+	public ResponseData(String statusCode, String busiCode, String statusInfo) {
+		this.statusCode = statusCode;
+		this.busiCode = busiCode;
+		this.statusInfo = statusInfo;
+	}
 
-    public String getStatusCode() {
-        return statusCode;
-    }
+	public ResponseData(String statusCode, String busiCode, String statusInfo, T data) {
+		this.statusCode = statusCode;
+		this.busiCode = busiCode;
+		this.statusInfo = statusInfo;
+		this.data = data;
+	}
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
+	public String getStatusCode() {
+		return statusCode;
+	}
 
-    public String getStatusInfo() {
-        return statusInfo;
-    }
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
 
-    public void setStatusInfo(String statusInfo) {
-        this.statusInfo = statusInfo;
-    }
+	public String getStatusInfo() {
+		return statusInfo;
+	}
 
-    public T getData() {
-        return data;
-    }
+	public void setStatusInfo(String statusInfo) {
+		this.statusInfo = statusInfo;
+	}
 
-    public void setData(T data) {
-        this.data = data;
-    }
+	public T getData() {
+		return data;
+	}
+
+	public void setData(T data) {
+		this.data = data;
+	}
+
+	public String getBusiCode() {
+		return busiCode;
+	}
+
+	public void setBusiCode(String busiCode) {
+		this.busiCode = busiCode;
+	}
+	
+	
 
 }
