@@ -21,6 +21,10 @@ public enum RedisDataKey {
 	KEY_GO_TAGS("harbor.go.tags", "GO系统标签"),
 
 	KEY_BE_TAGS("harbor.be.tags", "BE系统标签"),
+	
+	KEY_GO_INDEX_PAGE_TAGS("harbor.go.indexpage.tags", "GO显示在首页标签"),
+
+	KEY_BE_INDEX_PAGE_TAGS("harbor.be.indexpage.tags", "BE显示在首页标签"),
 
 	KEY_NOTIFY_USER_UNREAD_IDS_PREFFIX("harbor.notify.user.unread.userid.",
 			"记录发送给单个用户的未读消息通知，值为消息notifyId的列表。为sortset类型"),
