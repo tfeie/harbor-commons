@@ -29,4 +29,14 @@ public class HyTagUtil {
 		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
 	}
 
+	public static List<HyTagVo> getAllGoIndexPageTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_GO_INDEX_PAGE_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
+	public static List<HyTagVo> getAllBeIndexPageTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_BE_INDEX_PAGE_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
 }
