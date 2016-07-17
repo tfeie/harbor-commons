@@ -188,7 +188,7 @@ public final class HyBeUtil {
 	/**
 	 * 获取BE打赏的海贝数量
 	 */
-	public static Long getBeRewardHBCount(String beId, long currentHB) {
+	public static Long getBeRewardHBCount(String beId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_BE_HAIBEI_REWARD_COUNT_PREFFIX.getKey() + beId;
 		String total = cacheClient.get(key);
