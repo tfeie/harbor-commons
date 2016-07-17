@@ -30,6 +30,8 @@ public enum RedisDataKey {
 	KEY_BE_LIKES_PREFFIX("harbor.be.likes.beid.", "BE点赞数据缓存KEY前缀，后面加上BEID。值为用户列表"),
 
 	KEY_BE_HAIBEI_REWARDUSER_PREFFIX("harbor.be.haibei.rewarduser.beid.", "BE打赏的用户缓存KEY前缀，后面加上BEID。值为用户列表"),
+	
+	KEY_BE_HAIBEI_REWARD_COUNT_PREFFIX("harbor.be.haibei.rewardcount.beid.", "BE被打赏的海贝数量,值为海贝数量"),
 
 	KEY_BE_COMMENTS_IDS_PREFFIX("harbor.be.comments.beid.", "BE评论缓存KEY前缀，后面加上BEID。值为所有评论数据ID"),
 

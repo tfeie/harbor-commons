@@ -170,6 +170,32 @@ public final class HyBeUtil {
 	}
 
 	/**
+	 * 记录BE打赏的海贝总数
+	 * 
+	 * @param beId
+	 * @param currentHB
+	 */
+	public static void recordBeRewardHB(String beId, long currentHB) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_HAIBEI_REWARD_COUNT_PREFFIX.getKey() + beId;
+		if (cacheClient.exists(key)) {
+			String count = cacheClient.get(key);
+			long total = Long.valueOf(count) + currentHB;
+			cacheClient.set(key, String.valueOf(total));
+		}
+	}
+
+	/**
+	 * 获取BE打赏的海贝数量
+	 */
+	public static Long getBeRewardHBCount(String beId, long currentHB) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_BE_HAIBEI_REWARD_COUNT_PREFFIX.getKey() + beId;
+		String total = cacheClient.get(key);
+		return Long.valueOf(total);
+	}
+
+	/**
 	 * 用户打赏海贝记录
 	 * 
 	 * @param beId
