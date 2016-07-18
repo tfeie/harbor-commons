@@ -24,13 +24,28 @@ public class HyTagUtil {
 		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
 	}
 
+	public static List<HyTagVo> getAllGroupTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_GROUP_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
+	public static List<HyTagVo> getAllOnOTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_ONO_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
 	public static List<HyTagVo> getAllBeTags() {
 		String data = CacheFactory.getClient().get(RedisDataKey.KEY_BE_TAGS.getKey());
 		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
 	}
 
-	public static List<HyTagVo> getAllGoIndexPageTags() {
-		String data = CacheFactory.getClient().get(RedisDataKey.KEY_GO_INDEX_PAGE_TAGS.getKey());
+	public static List<HyTagVo> getAllGroupIndexPageTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_GROUP_INDEX_PAGE_TAGS.getKey());
+		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
+	}
+
+	public static List<HyTagVo> getAllOnOIndexPageTags() {
+		String data = CacheFactory.getClient().get(RedisDataKey.KEY_ONO_INDEX_PAGE_TAGS.getKey());
 		return data == null ? null : JSONArray.parseArray(data, HyTagVo.class);
 	}
 

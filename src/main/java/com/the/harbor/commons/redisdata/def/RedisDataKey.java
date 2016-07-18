@@ -21,8 +21,12 @@ public enum RedisDataKey {
 	KEY_GO_TAGS("harbor.go.tags", "GO系统标签"),
 
 	KEY_BE_TAGS("harbor.be.tags", "BE系统标签"),
-	
-	KEY_GO_INDEX_PAGE_TAGS("harbor.go.indexpage.tags", "GO显示在首页标签"),
+
+	KEY_GROUP_TAGS("harbor.group.tags", "GROUP系统标签"), KEY_ONO_TAGS("harbor.ono.tags", "ONO系统标签"),
+
+	KEY_GROUP_INDEX_PAGE_TAGS("harbor.group.indexpage.tags", "GROUP显示在首页标签"),
+
+	KEY_ONO_INDEX_PAGE_TAGS("harbor.ono.indexpage.tags", "ONE显示在首页标签"),
 
 	KEY_BE_INDEX_PAGE_TAGS("harbor.be.indexpage.tags", "BE显示在首页标签"),
 
@@ -34,7 +38,7 @@ public enum RedisDataKey {
 	KEY_BE_LIKES_PREFFIX("harbor.be.likes.beid.", "BE点赞数据缓存KEY前缀，后面加上BEID。值为用户列表"),
 
 	KEY_BE_HAIBEI_REWARDUSER_PREFFIX("harbor.be.haibei.rewarduser.beid.", "BE打赏的用户缓存KEY前缀，后面加上BEID。值为用户列表"),
-	
+
 	KEY_BE_HAIBEI_REWARD_COUNT_PREFFIX("harbor.be.haibei.rewardcount.beid.", "BE被打赏的海贝数量,值为海贝数量"),
 
 	KEY_BE_COMMENTS_IDS_PREFFIX("harbor.be.comments.beid.", "BE评论缓存KEY前缀，后面加上BEID。值为所有评论数据ID"),
@@ -68,7 +72,7 @@ public enum RedisDataKey {
 	KEY_USER_FRIEND_BECOME_PREFFIX("harbor.user.friend.become.userid.", "记录这个用户的正式好友。值为用户列表"),
 
 	KEY_USER_FAVOR_GO_ONO_PREFFIX("harbor.user.favorgo.ono.userid.", "用户收藏的GO列表。key加上userId,值为goId"),
-	
+
 	KEY_USER_FAVOR_GO_GROUP_PREFFIX("harbor.user.favorgo.group.userid.", "用户收藏的GO列表。key加上userId,值为goId"),
 
 	KEY_USER_FAVOR_BE_PREFFIX("harbor.user.favorbe.userid.", "用户收藏的GO列表。key加上userId,值为beId"),
