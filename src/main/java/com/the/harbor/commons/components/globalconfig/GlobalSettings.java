@@ -498,4 +498,12 @@ public final class GlobalSettings {
 		}
 		return url;
 	}
+	
+	public static final String getPrivateKey() {
+		String privateKey = properties.getProperty("harbor.user.privateKey");
+		if (StringUtil.isBlank(privateKey)) {
+			throw new SDKException("can not get harbor.user.privateKey from the file: " + SETTINGS_FILE_NAME);
+		}
+		return privateKey;
+	}
 }
