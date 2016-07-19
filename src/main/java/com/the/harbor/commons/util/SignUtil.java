@@ -12,7 +12,7 @@ import com.the.harbor.commons.exception.SDKException;
 public class SignUtil {
 
 	 public static String getUserInviteSign(String userId,String inviteCode) {
-		String privateKey = GlobalSettings.getPrivateKey();
+		String privateKey = "zhousf";//GlobalSettings.getPrivateKey();
 		String str = "inviteCode=" + inviteCode + "&privateKey=" + privateKey + "&userId=" + userId;
 		String signature = null;
 		try {
