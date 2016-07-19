@@ -6,6 +6,7 @@ import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.components.redis.interfaces.ICacheClient;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
 import com.the.harbor.commons.util.DateUtil;
+import com.the.harbor.commons.util.StringUtil;
 
 public final class HyBeUtil {
 
@@ -192,7 +193,7 @@ public final class HyBeUtil {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_BE_HAIBEI_REWARD_COUNT_PREFFIX.getKey() + beId;
 		String total = cacheClient.get(key);
-		return Long.valueOf(total);
+		return StringUtil.isBlank(total)?0:Long.valueOf(total);
 	}
 
 	/**
