@@ -6,13 +6,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 
 import com.the.harbor.commons.components.globalconfig.GlobalSettings;
-import com.the.harbor.commons.components.weixin.WXHelpUtil;
 import com.the.harbor.commons.exception.SDKException;
 
 public class SignUtil {
 
-	 public static String getUserInviteSign(String userId,String inviteCode) {
-		String privateKey = "zhousf";//GlobalSettings.getPrivateKey();
+	/**
+	 * 生成用户注册邀请码签名
+	 * 
+	 * @param userId
+	 * @param inviteCode
+	 * @return
+	 */
+	public static String getUserInviteSign(String userId, String inviteCode) {
+		String privateKey = GlobalSettings.getInviteCodePrivateKey();
 		String str = "inviteCode=" + inviteCode + "&privateKey=" + privateKey + "&userId=" + userId;
 		String signature = null;
 		try {
@@ -26,15 +32,15 @@ public class SignUtil {
 			throw new SDKException("生成签名失败", e);
 		}
 		return signature;
-	 }
-	 
-	 private static String byteToHex(final byte[] hash) {
-			Formatter formatter = new Formatter();
-			for (byte b : hash) {
-				formatter.format("%02x", b);
-			}
-			String result = formatter.toString();
-			formatter.close();
-			return result;
+	}
+
+	private static String byteToHex(final byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash) {
+			formatter.format("%02x", b);
 		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
 }

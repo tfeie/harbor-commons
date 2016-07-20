@@ -498,11 +498,17 @@ public final class GlobalSettings {
 		}
 		return url;
 	}
-	
-	public static final String getPrivateKey() {
-		String privateKey = properties.getProperty("harbor.user.privateKey");
+
+	/**
+	 * 获取邀请注册码签名私钥匙
+	 * 
+	 * @return
+	 */
+	public static final String getInviteCodePrivateKey() {
+		String privateKey = properties.getProperty("harbor.user.invitecode.privateKey");
 		if (StringUtil.isBlank(privateKey)) {
-			throw new SDKException("can not get harbor.user.privateKey from the file: " + SETTINGS_FILE_NAME);
+			throw new SDKException(
+					"can not get harbor.user.invitecode.privateKey from the file: " + SETTINGS_FILE_NAME);
 		}
 		return privateKey;
 	}
