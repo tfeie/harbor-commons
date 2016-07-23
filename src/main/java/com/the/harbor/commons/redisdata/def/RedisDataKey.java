@@ -2,6 +2,8 @@ package com.the.harbor.commons.redisdata.def;
 
 public enum RedisDataKey {
 
+	KEY_CFG("harbor.single.cfg", "单个系统配置缓存"),
+
 	KEY_SINGLE_COUNTRY("harbor.single.country", "单个国家缓存"),
 
 	KEY_ALL_COUNTRIES("harbor.all.countries", "所有国家以列表方式缓存"),
