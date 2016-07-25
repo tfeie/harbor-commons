@@ -2,7 +2,11 @@ package com.the.harbor.commons.components.aliyuncs.sms.param;
 
 import java.sql.Timestamp;
 
-public class SMSSendResponse {
+import com.the.harbor.base.vo.MNSBody;
+
+public class SMSSendResponse extends MNSBody {
+
+	private static final long serialVersionUID = 1L;
 
 	private String recordId;
 
