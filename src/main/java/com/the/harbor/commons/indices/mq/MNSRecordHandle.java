@@ -13,7 +13,7 @@ import com.the.harbor.commons.util.StringUtil;
 
 public class MNSRecordHandle {
 
-	public static void addMNSRecord(MNSRecord mns) {
+	public static void sendMNSRecord(MNSRecord mns) {
 		if (mns == null) {
 			return;
 		}
@@ -25,7 +25,6 @@ public class MNSRecordHandle {
 		}
 		try {
 			String id = mns.getMqType() + "." + mns.getMqId();
-			mns.setStatus("INIT");
 			mns.setSendDate(DateUtil.getDateString(DateUtil.DATETIME_FORMAT));
 			ElasticSearchFactory.addIndex(HarborIndex.HY_MNS_DB.getValue(), HarborIndexType.HY_MNS_DATA.getValue(), id,
 					JSON.toJSONString(mns));
@@ -53,8 +52,9 @@ public class MNSRecordHandle {
 				return;
 			}
 			MNSRecord mns = JSON.parseObject(response.getHits().getHits()[0].getSourceAsString(), MNSRecord.class);
-			mns.setStatus(result ? "CONSUMER_SUCCESS" : "CONSUMER_FAIL");
-			mns.setError(error);
+			mns.setConsumeStatus(
+					result ? MNSRecord.Status.CONSUME_SUCCESS.name() : MNSRecord.Status.CONSUME_FAIL.name());
+			mns.setConsumeError(error);
 			mns.setConsumeDate(DateUtil.getDateString(DateUtil.DATETIME_FORMAT));
 			client.prepareIndex(HarborIndex.HY_MNS_DB.getValue().toLowerCase(),
 					HarborIndexType.HY_MNS_DATA.getValue().toLowerCase(), id).setRefresh(true)

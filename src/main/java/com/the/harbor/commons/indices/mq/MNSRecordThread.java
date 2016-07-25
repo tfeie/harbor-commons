@@ -10,7 +10,7 @@ public class MNSRecordThread implements Runnable {
 
 	@Override
 	public void run() {
-		MNSRecordHandle.addMNSRecord(record);
+		MNSRecordHandle.sendMNSRecord(record);
 	}
 
 }

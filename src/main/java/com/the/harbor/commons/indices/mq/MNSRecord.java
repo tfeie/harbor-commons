@@ -1,8 +1,14 @@
 package com.the.harbor.commons.indices.mq;
 
+import java.io.Serializable;
+
 public class MNSRecord implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public enum Status implements Serializable {
+		SEND_SUCCESS, SEND_FAIL, CONSUME_SUCCESS, CONSUME_FAIL;
+	}
 
 	/**
 	 * 消息ID
@@ -15,14 +21,24 @@ public class MNSRecord implements java.io.Serializable {
 	private String mqType;
 
 	/**
-	 * 状态
+	 * 发送状态
 	 */
-	private String status;
+	private String sendStatus;
 
 	/**
-	 * 失败原因
+	 * 消费状态
 	 */
-	private String error;
+	private String consumeStatus;
+
+	/**
+	 * 发送失败原因
+	 */
+	private String sendError;
+
+	/**
+	 * 消费失败原因
+	 */
+	private String consumeError;
 
 	/**
 	 * 消息体内容
@@ -55,20 +71,36 @@ public class MNSRecord implements java.io.Serializable {
 		this.mqType = mqType;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getSendStatus() {
+		return sendStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setSendStatus(String sendStatus) {
+		this.sendStatus = sendStatus;
 	}
 
-	public String getError() {
-		return error;
+	public String getConsumeStatus() {
+		return consumeStatus;
 	}
 
-	public void setError(String error) {
-		this.error = error;
+	public void setConsumeStatus(String consumeStatus) {
+		this.consumeStatus = consumeStatus;
+	}
+
+	public String getSendError() {
+		return sendError;
+	}
+
+	public void setSendError(String sendError) {
+		this.sendError = sendError;
+	}
+
+	public String getConsumeError() {
+		return consumeError;
+	}
+
+	public void setConsumeError(String consumeError) {
+		this.consumeError = consumeError;
 	}
 
 	public Object getMqBody() {
