@@ -3,6 +3,8 @@ package com.the.harbor.commons.indices.def;
 import com.the.harbor.base.enumeration.base.Behaviour;
 
 public enum HarborIndex implements Behaviour {
+	
+	HY_MNS_DB("hy_mns_db", "mns消息组"),
 
 	HY_COMMON_DB("hy_common_db", "公共数据组"),
 
