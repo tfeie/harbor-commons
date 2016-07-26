@@ -357,5 +357,28 @@ public final class HyGoUtil {
 		String key = RedisDataKey.KEY_GO_JOIN_WAIT_CONFIRM_USER_PREFFIX.getKey() + goId;
 		return cacheClient.zrange(key, 0, -1).contains(userId);
 	}
+	
+	
+	/**
+	 * 记录活动与订单的评论信息
+	 * 
+	 * @param goId
+	 * @param orderId
+	 * @param commentId
+	 */
+	public static void recordGoJoinCommentId(String goId, String orderId, String commentId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_COMMENTS_IDS_PREFFIX.getKey() + orderId;
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), commentId);
+
+		key = RedisDataKey.KEY_GO_COMMENTS_IDS_PREFFIX.getKey() + goId;
+		cacheClient.zadd(key, DateUtil.getCurrentTimeMillis(), commentId);
+	}
+	
+	public static Set<String> getGoJoinCommentIds(String orderId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_JOIN_COMMENTS_IDS_PREFFIX.getKey() + orderId;
+		return cacheClient.zrange(key, 0, -1 );
+	}
 
 }
