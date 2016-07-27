@@ -357,4 +357,21 @@ public final class HyGoUtil {
 		return cacheClient.zrange(key, 0, -1).contains(userId);
 	}
 
+	/**
+	 * 用户浏览GO
+	 * 
+	 * @param goId
+	 */
+	public static void userViewGo(long goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_VIEW_PREFFIX.getKey() + goId;
+		if (cacheClient.exists(key)) {
+			String count = cacheClient.get(key);
+			long total = Long.valueOf(count) + 1;
+			cacheClient.set(key, String.valueOf(total));
+		} else {
+			cacheClient.set(key, "1");
+		}
+	}
+
 }
