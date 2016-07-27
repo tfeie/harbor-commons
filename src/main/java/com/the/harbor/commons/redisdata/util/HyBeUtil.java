@@ -183,6 +183,8 @@ public final class HyBeUtil {
 			String count = cacheClient.get(key);
 			long total = Long.valueOf(count) + currentHB;
 			cacheClient.set(key, String.valueOf(total));
+		}else{
+			cacheClient.set(key, String.valueOf(currentHB));
 		}
 	}
 
