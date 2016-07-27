@@ -8,6 +8,7 @@ import com.the.harbor.commons.components.redis.CacheFactory;
 import com.the.harbor.commons.components.redis.interfaces.ICacheClient;
 import com.the.harbor.commons.redisdata.def.RedisDataKey;
 import com.the.harbor.commons.util.DateUtil;
+import com.the.harbor.commons.util.StringUtil;
 
 public final class HyGoUtil {
 
@@ -372,6 +373,13 @@ public final class HyGoUtil {
 		} else {
 			cacheClient.set(key, "1");
 		}
+	}
+
+	public static long getGoViewCount(long goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_VIEW_PREFFIX.getKey() + goId;
+		String count = cacheClient.get(key);
+		return StringUtil.isBlank(count) ? 0 : Long.parseLong(cacheClient.get(key));
 	}
 
 }
