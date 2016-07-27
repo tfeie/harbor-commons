@@ -2,6 +2,12 @@ package com.the.harbor.commons.redisdata.def;
 
 public enum RedisDataKey {
 
+	KEY_ALL_AREA("harbor.all.area", "所有地域数据缓存，一级key为此，二级key为areaCode，值为HyAreaVo"),
+
+	KEY_ALL_PROVINCE("harbor.all.province", "所有省级地域数据缓存，一级key为此，值为省份List<HyAreaVo>"),
+
+	KEY_CITY("harbor.all.city", "所有地市地域数据缓存，一级key为此，二级key为省级areaCode，值为地市List<HyAreaVo>"),
+
 	KEY_CFG("harbor.single.cfg", "单个系统配置缓存"),
 
 	KEY_SINGLE_COUNTRY("harbor.single.country", "单个国家缓存"),
@@ -48,7 +54,7 @@ public enum RedisDataKey {
 	KEY_BE_COMMENTS_CONTENT_PREFFIX("harbor.be.comments.commentid.", "BE评论内容KEY前缀，后面加上commentId。值为对应的评论内容BeComment"),
 
 	KEY_GO_COMMENTS_IDS_PREFFIX("harbor.go.comments.goid.", "GO评论缓存KEY前缀，后面加上GOID。值为所有评论数据ID"),
-	
+
 	KEY_GO_ORDER_COMMENTS_IDS_PREFFIX("harbor.go.order.comments.orderid.", "针对单个预约订单的评论缓存KEY前缀，后面加上ORDERID。值为所有评论数据ID"),
 
 	KEY_GO_COMMENTS_CONTENT_PREFFIX("harbor.go.comments.commentid.", "GO评论内容KEY前缀，后面加上commentId。值为对应的评论内容GoComment"),
