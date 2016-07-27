@@ -363,7 +363,7 @@ public final class HyGoUtil {
 	 * 
 	 * @param goId
 	 */
-	public static void userViewGo(long goId) {
+	public static void userViewGo(String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_VIEW_PREFFIX.getKey() + goId;
 		if (cacheClient.exists(key)) {
@@ -375,7 +375,7 @@ public final class HyGoUtil {
 		}
 	}
 
-	public static long getGoViewCount(long goId) {
+	public static long getGoViewCount(String goId) {
 		ICacheClient cacheClient = CacheFactory.getClient();
 		String key = RedisDataKey.KEY_GO_VIEW_PREFFIX.getKey() + goId;
 		String count = cacheClient.get(key);
