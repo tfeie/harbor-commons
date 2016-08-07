@@ -408,6 +408,32 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * go删除处理队列
+	 * 
+	 * @return
+	 */
+	public static final String getGoDeleteQueueName() {
+		String queue = properties.getProperty("harbor.mns.go.delete.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.go.delete.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
+	 * be删除处理队列
+	 * 
+	 * @return
+	 */
+	public static final String getBeDeleteQueueName() {
+		String queue = properties.getProperty("harbor.mns.be.delete.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.be.delete.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 获取微信普通TOKEN的API
 	 * 
 	 * @return
