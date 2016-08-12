@@ -37,4 +37,20 @@ public class HyCfgUtil {
 		return users.contains(userId);
 	}
 
+	/**
+	 * 判断是否超级用户
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public static boolean checkSuperUser(String userId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String value = cacheClient.hget(RedisDataKey.KEY_CFG.getKey(), "super_users");
+		if (StringUtil.isBlank(value)) {
+			return false;
+		}
+		List<String> users = Arrays.asList(value.split(","));
+		return users.contains(userId);
+	}
+
 }
