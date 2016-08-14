@@ -250,6 +250,11 @@ publishing {
                             delegate.version("1.0.20160505")
                         }
                         delegate.dependency {
+                            delegate.groupId("com.taobao")
+                            delegate.artifactId("taobao-sdk-im")
+                            delegate.version("20160813")
+                        }
+                        delegate.dependency {
                             delegate.groupId("com.aliyun.mns")
                             delegate.artifactId("aliyun-sdk-mns")
                             delegate.version("1.1.5")
