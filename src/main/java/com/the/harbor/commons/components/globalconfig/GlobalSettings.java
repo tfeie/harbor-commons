@@ -434,6 +434,19 @@ public final class GlobalSettings {
 	}
 
 	/**
+	 * 获取阿里OPENIM的账号同步队列
+	 * 
+	 * @return
+	 */
+	public static final String getIMUserQueueName() {
+		String queue = properties.getProperty("harbor.mns.im.user.queue");
+		if (StringUtil.isBlank(queue)) {
+			throw new SDKException("can not get harbor.mns.im.user.queue from the file: " + SETTINGS_FILE_NAME);
+		}
+		return queue;
+	}
+
+	/**
 	 * 获取微信普通TOKEN的API
 	 * 
 	 * @return
