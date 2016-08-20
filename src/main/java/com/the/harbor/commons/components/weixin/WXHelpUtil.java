@@ -397,10 +397,11 @@ public final class WXHelpUtil {
 		// 将参数转化成XML格式
 		String postXML = convertMap2XML(map);
 
-		HttpPost httpPost = new HttpPost(url);
-		httpPost.setEntity(new StringEntity(postXML, "UTF-8"));
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+		
 		try {
+			HttpPost httpPost = new HttpPost(url);
+			httpPost.setEntity(new StringEntity(postXML, "UTF-8"));
+			CloseableHttpClient httpclient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpclient.execute(httpPost);
 			String xml = EntityUtils.toString(response.getEntity(), "UTF-8");
 			String jsonStr = new XMLSerializer().read(xml).toString();
