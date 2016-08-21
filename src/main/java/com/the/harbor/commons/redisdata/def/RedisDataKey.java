@@ -38,8 +38,8 @@ public enum RedisDataKey {
 
 	KEY_BE_INDEX_PAGE_TAGS("harbor.be.indexpage.tags", "BE显示在首页标签"),
 
-	KEY_NOTIFY_USER_UNREAD_IDS_PREFFIX("harbor.notify.user.unread.userid.",
-			"记录发送给单个用户的未读消息通知，值为消息notifyId的列表。为sortset类型"),
+	KEY_NOTIFY_USER_IDS_PREFFIX("harbor.notify.userid.",
+			"记录发送给单个用户的消息通知，值为消息notifyId的列表。为sortset类型"),
 
 	KEY_NOTIFY_CONTENT_PREFIX("harbor.notify.content.", "记录消息的内容，key为notifyId,值为xx序列化的值"),
 
