@@ -19,7 +19,8 @@ public class OpenSearchUserTest {
 		// 添加指定搜索的应用：
 		search.addIndex(OpenSearchSettings.getAppName());
 		// 指定搜索的关键词，这里要指定在哪个索引上搜索，如果不指定的话默认在使用“default”索引（索引字段名称是您在您的数据结构中的“索引到”字段。）
-		search.setQueryString("usersearch:'财务'");
+		search.setQueryString("industryname:'互联网' RANK atcity:'151' ");
+		search.setQueryString("");
 		// 指定搜索返回的格式。
 		search.setFormat("json");
 		// 设定排序方式 + 表示正序 - 表示降序
