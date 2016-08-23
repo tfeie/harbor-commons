@@ -23,4 +23,16 @@ public final class OpenSearchFactory {
 		}
 	}
 
+	public static CloudsearchClient getClient(Map<String, Object> opts) {
+		String accesskey = OpenSearchSettings.getAccessKeyId();
+		String secret = OpenSearchSettings.getAccessKeySecret();
+		String host = OpenSearchSettings.getHost();
+		try {
+			CloudsearchClient client = new CloudsearchClient(accesskey, secret, host, opts, KeyTypeEnum.ALIYUN);
+			return client;
+		} catch (UnknownHostException e) {
+			throw new SystemException(e);
+		}
+	}
+
 }
