@@ -382,4 +382,16 @@ public final class HyGoUtil {
 		return StringUtil.isBlank(count) ? 0 : Long.parseLong(cacheClient.get(key));
 	}
 
+	public static void recordGo(String goId, String data) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_DATA.getKey() + goId;
+		cacheClient.set(key, data);
+	}
+
+	public static String getGo(String goId) {
+		ICacheClient cacheClient = CacheFactory.getClient();
+		String key = RedisDataKey.KEY_GO_DATA.getKey() + goId;
+		return cacheClient.get(key);
+	}
+
 }
