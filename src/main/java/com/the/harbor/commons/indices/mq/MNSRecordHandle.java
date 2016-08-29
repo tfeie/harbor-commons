@@ -1,17 +1,16 @@
 package com.the.harbor.commons.indices.mq;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
-import com.the.harbor.commons.components.elasticsearch.ElasticSearchFactory;
-import com.the.harbor.commons.indices.def.HarborIndex;
-import com.the.harbor.commons.indices.def.HarborIndexType;
+import com.the.harbor.commons.components.redis.CacheFactory;
+import com.the.harbor.commons.redisdata.def.RedisDataKey;
 import com.the.harbor.commons.util.DateUtil;
 import com.the.harbor.commons.util.StringUtil;
 
 public class MNSRecordHandle {
+
+	private static final Logger LOG = Logger.getLogger(MNSRecordHandle.class);
 
 	public static void sendMNSRecord(MNSRecord mns) {
 		if (mns == null) {
@@ -26,10 +25,9 @@ public class MNSRecordHandle {
 		try {
 			String id = mns.getMqType() + "." + mns.getMqId();
 			mns.setSendDate(DateUtil.getDateString(DateUtil.DATETIME_FORMAT));
-			ElasticSearchFactory.addIndex(HarborIndex.HY_MNS_DB.getValue(), HarborIndexType.HY_MNS_DATA.getValue(), id,
-					JSON.toJSONString(mns));
+			CacheFactory.getClient().hset(RedisDataKey.KEY_MNS_RECORD.getKey(), id, JSON.toJSONString(mns));
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error("记录MNS消息发送信息失败", ex);
 		}
 
 	}
@@ -43,24 +41,18 @@ public class MNSRecordHandle {
 		}
 		try {
 			String id = mqType + "." + mqId;
-			ElasticSearchFactory.getClient();
-			Client client = ElasticSearchFactory.getClient();
-			SearchResponse response = client.prepareSearch(HarborIndex.HY_MNS_DB.getValue())
-					.setTypes(HarborIndexType.HY_MNS_DATA.getValue()).setQuery(QueryBuilders.termQuery("_id", id))
-					.execute().actionGet();
-			if (response.getHits().totalHits() == 0) {
-				return;
+
+			String data = CacheFactory.getClient().hget(RedisDataKey.KEY_MNS_RECORD.getKey(), id);
+			if (!StringUtil.isBlank(data)) {
+				MNSRecord mns = JSON.parseObject(data, MNSRecord.class);
+				mns.setConsumeStatus(
+						result ? MNSRecord.Status.CONSUME_SUCCESS.name() : MNSRecord.Status.CONSUME_FAIL.name());
+				mns.setConsumeError(error);
+				mns.setConsumeDate(DateUtil.getDateString(DateUtil.DATETIME_FORMAT));
+				CacheFactory.getClient().hset(RedisDataKey.KEY_MNS_RECORD.getKey(), id, JSON.toJSONString(mns));
 			}
-			MNSRecord mns = JSON.parseObject(response.getHits().getHits()[0].getSourceAsString(), MNSRecord.class);
-			mns.setConsumeStatus(
-					result ? MNSRecord.Status.CONSUME_SUCCESS.name() : MNSRecord.Status.CONSUME_FAIL.name());
-			mns.setConsumeError(error);
-			mns.setConsumeDate(DateUtil.getDateString(DateUtil.DATETIME_FORMAT));
-			client.prepareIndex(HarborIndex.HY_MNS_DB.getValue().toLowerCase(),
-					HarborIndexType.HY_MNS_DATA.getValue().toLowerCase(), id).setRefresh(true)
-					.setSource(JSON.toJSONString(mns)).execute().actionGet();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error("修改MNS消息发送信息失败", ex);
 		}
 
 	}

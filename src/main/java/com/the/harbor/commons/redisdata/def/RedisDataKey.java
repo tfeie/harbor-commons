@@ -2,6 +2,8 @@ package com.the.harbor.commons.redisdata.def;
 
 public enum RedisDataKey {
 
+	KEY_MNS_RECORD("harbor.mns.record", "MNS消息发送记录。此为一级key，二级key为消息类型+消息ID，值为消息记录"),
+
 	KEY_ALL_AREA("harbor.all.area", "所有地域数据缓存，一级key为此，二级key为areaCode，值为HyAreaVo"),
 
 	KEY_ALL_PROVINCE("harbor.all.province", "所有省级地域数据缓存，一级key为此，值为省份List<HyAreaVo>"),
